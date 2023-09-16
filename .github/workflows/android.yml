@@ -1,4 +1,4 @@
-name: android master CI2
+name: CompileProject
 
 on:
 
