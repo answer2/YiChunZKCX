@@ -24,7 +24,6 @@
 -keep class dev.answer.yichunzkcx.bean.** { *; }
 -keep class org.apache.poi.xssf.usermodel.XSSFWorkbook
 -keep class org.apache.poi.ss.usermodel.Workbook
--keep class org.apache.poi.ss.usermodel.WorkbookFactory
 -keep class org.apache.poi.hssf.usermodel.HSSFWorkbook
 
 
