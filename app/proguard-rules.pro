@@ -20,7 +20,14 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+
 -keep class dev.answer.yichunzkcx.bean.** { *; }
--keep class org.apache.poi.** { *; }
+-keep class org.apache.poi.xssf.usermodel.XSSFWorkbook
+-keep class org.apache.poi.ss.usermodel.Workbook
+-keep class org.apache.poi.ss.usermodel.Sheet
+-keep class org.apache.poi.ss.usermodel.Row
+-keep class org.apache.poi.ss.usermodel.Cell
+-keep class org.apache.poi.ss.usermodel.WorkbookFactory
+-keep class org.apache.poi.hssf.usermodel.HSSFWorkbook
 
 
