@@ -10,7 +10,7 @@ android {
 
     signingConfigs {
         create("release")  {
-            storeFile = file("app/AnswerDev.jks") // 密钥库文件路径
+            storeFile = file("AnswerDev.jks") // 密钥库文件路径
             storePassword = "2903536884AnswerDev" // 密钥库密码
             keyAlias = "AnswerDev" // 密钥别名
             keyPassword = "2903536884AnswerDev" // 密钥密码
