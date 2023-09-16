@@ -8,6 +8,14 @@ android {
     namespace = "dev.answer.yichunzkcx"
     compileSdk = 33
 
+    signingConfigs {
+        release {
+            storeFile file("app/AnswerDev.jks") // 密钥库文件路径
+            storePassword "2903536884AnswerDev" // 密钥库密码
+            keyAlias "AnswerDev" // 密钥别名
+            keyPassword "2903536884AnswerDev" // 密钥密码
+        }
+    }
 
     defaultConfig {
         applicationId = "dev.answer.yichunzkcx"
