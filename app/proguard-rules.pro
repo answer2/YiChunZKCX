@@ -21,6 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class dev.answer.yichunzkcx.bean.** { *; }
--keep class org.apache.** { *; }
+-keep class org.apache.poi.** { *; }
 
 
