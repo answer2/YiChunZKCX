@@ -7,7 +7,7 @@ plugins {
 android {
     namespace = "dev.answer.yichunzkcx"
     compileSdk = 33
-    buildToolsVersion = "33.0.3"
+
 
     defaultConfig {
         applicationId = "dev.answer.yichunzkcx"
