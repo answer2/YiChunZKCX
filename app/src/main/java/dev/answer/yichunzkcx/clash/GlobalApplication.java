@@ -6,8 +6,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,15 +20,11 @@ import android.view.MenuItem;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
-import android.graphics.Color;
-import dev.answer.alternativebox.utils.ThemeUtils;
 import androidx.core.widget.NestedScrollView;
-
 import com.google.android.material.textview.MaterialTextView;
-
+import dev.answer.yichunzkcx.util.ThemeUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
