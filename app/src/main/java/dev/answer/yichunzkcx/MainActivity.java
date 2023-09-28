@@ -1,8 +1,10 @@
 package dev.answer.yichunzkcx;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,37 +19,82 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import androidx.core.content.ContextCompat;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import android.os.Environment;
+import android.provider.Settings;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.transition.platform.MaterialSharedAxis;
 import dev.answer.yichunzkcx.activity.BaseActivity;
+import dev.answer.yichunzkcx.fragment.BatchQueryFragment;
+import dev.answer.yichunzkcx.fragment.EnrollQueryFragment;
 import dev.answer.yichunzkcx.fragment.HomeFragment;
+import dev.answer.yichunzkcx.thread.CountdownRunnable;
 
 public class MainActivity extends BaseActivity {
 
   private BottomNavigationView bottomNavigationView;
 
   private HomeFragment homeFragment;
+  private EnrollQueryFragment enrollQueryFragment;
+  private BatchQueryFragment batchQueryFragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    bottomNavigationView = findViewById(R.id.navigation_bar_view);
+    try {
 
-    homeFragment = new HomeFragment();
+      // 检查是否已经获得外部存储读取权限
+      if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+          != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(
+            this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1024);
+      }
+      requestmanageexternalstorage_Permission();
 
-    setCurrentFragment(homeFragment);
-  }
-    
-    @Override
-    public boolean isHasToolbar() {
-        // TODO: Implement this method
-        return false;
+      bottomNavigationView = findViewById(R.id.navigation_bar_view);
+
+      homeFragment = new HomeFragment();
+      enrollQueryFragment = new EnrollQueryFragment();
+      batchQueryFragment = new BatchQueryFragment();
+
+      initAnimation();
+
+      setCurrentFragment(homeFragment);
+
+      bottomNavigationView.setOnItemSelectedListener(
+          item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_achievement) {
+              setCurrentFragment(homeFragment);
+              return true;
+            } else if (itemId == R.id.menu_enroll) {
+              setCurrentFragment(enrollQueryFragment);
+              return true;
+            } else if (itemId == R.id.menu_excel) {
+              setCurrentFragment(batchQueryFragment);
+              return true;
+            }
+            return false;
+          });
+
+    } catch (Exception error) {
+      error.printStackTrace();
+      toast(error.toString());
     }
-    
+  }
+
+  @Override
+  public boolean isHasToolbar() {
+    // TODO: Implement this method
+    return false;
+  }
 
   @Override
   public String getActivityName() {
@@ -126,6 +173,17 @@ public class MainActivity extends BaseActivity {
     fragmentTransaction.commit();
   }
 
+  private void initAnimation() {
+    // home
+    homeFragment.setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+
+    // forum
+    enrollQueryFragment.setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+
+    // plugin
+    batchQueryFragment.setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+  }
+
   public void drawLink(
       SpannableString spannableString,
       String content,
@@ -168,12 +226,25 @@ public class MainActivity extends BaseActivity {
     int index = origin.lastIndexOf(target);
     return new int[] {index, index + target.length()};
   }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // TODO: Implement this method
-        homeFragment.onDestroy();
+
+  private void requestmanageexternalstorage_Permission() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+      // 先判断有没有权限
+      if (!Environment.isExternalStorageManager()) {
+        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+        intent.setData(Uri.parse("package:" + this.getPackageName()));
+        startActivity(intent);
+      }
     }
-    
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    // TODO: Implement this method
+    if (homeFragment != null && homeFragment.countdownTextView != null) {
+      CountdownRunnable countdownRunnable = new CountdownRunnable(homeFragment.countdownTextView);
+      new Thread(countdownRunnable).start(); // 在后台线程中开始倒计时任务
+    }
+  }
 }

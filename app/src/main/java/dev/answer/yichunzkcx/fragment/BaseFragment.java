@@ -2,6 +2,8 @@ package dev.answer.yichunzkcx.fragment;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.os.Bundle;
@@ -54,6 +56,10 @@ public abstract class BaseFragment extends Fragment {
 
   public void toast(String message) {
     Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+  }
+
+  public void delayed(Runnable able, int time) {
+    new Handler(Looper.getMainLooper()).postDelayed(able, time);
   }
 
   public String getFragmentName() {

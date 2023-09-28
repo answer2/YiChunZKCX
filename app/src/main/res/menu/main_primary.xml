@@ -3,10 +3,21 @@
 
     <item
         android:id="@+id/menu_achievement"
+        android:icon="@drawable/ic_query"
+        android:enabled="true"
+        android:checkable="true"
         android:title="成绩" />
-
+    
     <item
         android:id="@+id/menu_enroll"
-        android:title="录取" />
+        android:icon="@drawable/ic_enroll"
+        android:enabled="true"
+        android:title="录取"/>
+    
+    <item
+        android:id="@+id/menu_excel"
+        android:icon="@drawable/ic_excel"
+        android:enabled="true"
+        android:title="批量" />
     
 </menu>

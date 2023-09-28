@@ -194,7 +194,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="查询"
-        android:onClick="query"
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/dev_button"
@@ -206,7 +205,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dev模式"
-        android:onClick="dev"
         app:layout_constraintStart_toEndOf="@id/query_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/query_button" />

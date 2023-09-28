@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.activity.DevActivity;
@@ -21,13 +22,16 @@ public class HomeFragment extends BaseFragment {
   private View parentView;
 
   private MaterialToolbar toolbar;
-  private TextView countdownTextView;
+  public TextView countdownTextView;
 
   private TextInputEditText nameEdit;
   private TextInputEditText numberEdit;
   private TextInputEditText codeEdit;
 
   private ImageView codeImage;
+
+  private MaterialButton query_button;
+  private MaterialButton dev_button;
 
   private HttpUtil util;
 
@@ -36,19 +40,23 @@ public class HomeFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
 
-    
-
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
     try {
-            initBar();
-            
+      initBar();
+
       // init View
       countdownTextView = findViewById(R.id.Countdown);
       nameEdit = findViewById(R.id.name_textInput);
       numberEdit = findViewById(R.id.number_textInput);
       codeEdit = findViewById(R.id.code_textInput);
       codeImage = findViewById(R.id.code_image);
+      query_button = findViewById(R.id.query_button);
+      dev_button = findViewById(R.id.dev_button);
+
+      codeImage.setOnClickListener(view -> renewed());
+      query_button.setOnClickListener(view -> query());
+      dev_button.setOnClickListener(view -> dev());
 
       // init http util
       util = new HttpUtil(getActivity());
@@ -63,7 +71,7 @@ public class HomeFragment extends BaseFragment {
     return parentView;
   }
 
-    public void renewed() {
+  public void renewed() {
     try {
       util.QueryCode();
     } catch (Throwable error) {
@@ -72,17 +80,7 @@ public class HomeFragment extends BaseFragment {
     }
   }
 
-    
-  public void renewed(View view) {
-    try {
-      util.QueryCode();
-    } catch (Throwable error) {
-      error.printStackTrace();
-      toast(error.toString());
-    }
-  }
-
-  public void query(View view) {
+  public void query() {
     try {
       String name = removeSpaces(nameEdit);
       String number = removeSpaces(numberEdit);
@@ -103,7 +101,7 @@ public class HomeFragment extends BaseFragment {
     }
   }
 
-  public void dev(View view) {
+  public void dev() {
     Intent intent = new Intent(getActivity(), DevActivity.class);
     startActivity(intent);
   }
@@ -118,14 +116,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     return input.replaceAll("\\s", "");
-  }
-
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-    // TODO: Implement this method
-    CountdownRunnable countdownRunnable = new CountdownRunnable(countdownTextView);
-    new Thread(countdownRunnable).start(); // 在后台线程中开始倒计时任务
   }
 
   @Override

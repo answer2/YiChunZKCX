@@ -13,15 +13,20 @@ public class EnrollQueryFragment extends BaseFragment{
     public View loadRootView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: Implement this method
         
-        
         return super.loadRootView(inflater, container, savedInstanceState);
     }
-    
     
     @Override
     protected int getRootViewResID() {
         // TODO: Implement this method
         return R.layout.fragment_enroll;
     }
+    
+    @Override
+    public String getFragmentName() {
+        // TODO: Implement this method
+        return "录取查询";
+    }
+    
     
 }

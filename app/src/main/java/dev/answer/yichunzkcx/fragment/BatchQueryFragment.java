@@ -1,17 +1,21 @@
-package dev.answer.yichunzkcx.activity;
+package dev.answer.yichunzkcx.fragment;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.graphics.Color;
+import com.google.android.material.button.MaterialButton;
+import java.io.FileOutputStream;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
@@ -22,7 +26,7 @@ import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.bean.GradeResponse;
 import dev.answer.yichunzkcx.util.ExcelQueryTool;
 import dev.answer.yichunzkcx.util.HttpUtil;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +36,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class DevActivity extends BaseActivity {
+public class BatchQueryFragment extends BaseFragment {
 
   private int defaultColor;
   private MaterialCardView cardView;
@@ -58,8 +62,10 @@ public class DevActivity extends BaseActivity {
   private ArrayList<GradeResponse.Data> gradeList;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public View loadRootView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    // TODO: Implement this method
+
     try {
 
       input_textInput = findViewById(R.id.input_textInput);
@@ -75,8 +81,17 @@ public class DevActivity extends BaseActivity {
 
       codeImage = findViewById(R.id.code_image);
 
+      MaterialButton query_button = findViewById(R.id.query_button);
+      MaterialButton read_button = findViewById(R.id.read_button);
+      MaterialButton output_button = findViewById(R.id.output_button);
+
+      codeImage.setOnClickListener(view -> renewed());
+      query_button.setOnClickListener(view -> query());
+      read_button.setOnClickListener(view -> read());
+      output_button.setOnClickListener(view -> output());
+
       // init util
-      util = new HttpUtil(this);
+      util = new HttpUtil(getActivity());
       util.setImageView(codeImage);
       util.QueryCode();
 
@@ -86,22 +101,17 @@ public class DevActivity extends BaseActivity {
       nameList = new ArrayList<>();
       numberList = new ArrayList<>();
       gradeList = new ArrayList<>();
-      // 检查是否已经获得外部存储读取权限
-      if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-          != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(
-            this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 1024);
-      }
-      requestmanageexternalstorage_Permission();
 
     } catch (Throwable error) {
       error.printStackTrace();
       toast(error.toString());
-      Log.d("DevActivity", error.toString());
+      Log.d("Batch_Query", error.toString());
     }
+
+    return super.loadRootView(inflater, container, savedInstanceState);
   }
 
-  public void read(View view) {
+  public void read() {
     try {
       initData();
 
@@ -111,7 +121,7 @@ public class DevActivity extends BaseActivity {
     }
   }
 
-  public void renewed(View view) {
+  public void renewed() {
     try {
       util.QueryCode();
     } catch (Throwable error) {
@@ -120,7 +130,7 @@ public class DevActivity extends BaseActivity {
     }
   }
 
-  private void initData() throws Throwable {
+  private void initData() throws Exception {
     // init Apache POI
     excelTool.CreateByPath(removeSpaces(input_textInput));
 
@@ -135,7 +145,6 @@ public class DevActivity extends BaseActivity {
     // 遍历标题行的每个单元格，查找准考证号和姓名所在的列
 
     for (Cell cell : headerRow) {
-      log(cell.getStringCellValue() + "");
       String cellValue = cell != null ? cell.getStringCellValue() : "";
 
       if (cellValue.contains("准考证号")) {
@@ -185,15 +194,13 @@ public class DevActivity extends BaseActivity {
         // add list
         nameList.add(name);
         numberList.add(examNumber);
-
-        log("准考证号：" + examNumber + "，姓名：" + name);
       }
     }
 
     excelTool.close();
   }
 
-  public void query(View view) {
+  public void query() {
     try {
       if (TextUtils.isEmpty(code_textInput.getText().toString())) {
         code_textInput.setError("请输入验证码");
@@ -258,7 +265,7 @@ public class DevActivity extends BaseActivity {
     }
   }
 
-  public void output(View view) {
+  public void output() {
     try {
       if (!gradeList.isEmpty()) {
         // 创建工作簿
@@ -285,7 +292,6 @@ public class DevActivity extends BaseActivity {
 
         // 将数据写入单元格
         List<GradeResponse.Data> dataList = gradeList;
-        
 
         int rowNum = 1;
         for (GradeResponse.Data data : dataList) {
@@ -341,23 +347,18 @@ public class DevActivity extends BaseActivity {
   }
 
   @Override
-  public String getActivityName() {
+  protected int getRootViewResID() {
     // TODO: Implement this method
-    return "开发者模式";
+    return R.layout.fragment_batchquery;
   }
 
-  @Override
-  public int getActivityLayout() {
-    // TODO: Implement this method
-    return R.layout.activity_dev;
-  }
-
-  @Override
-  public boolean getShowBackButton() {
-    // TODO: Implement this method
-    return true;
-  }
-
+    @Override
+    public String getFragmentName() {
+        // TODO: Implement this method
+        return "批量查询";
+    }
+    
+    
   public String removeSpaces(TextInputEditText input) {
     return removeSpaces(input.getText().toString());
   }
@@ -372,16 +373,5 @@ public class DevActivity extends BaseActivity {
 
   public static String listToString(List<?> list) {
     return list.stream().map(Object::toString).collect(Collectors.joining(" "));
-  }
-
-  private void requestmanageexternalstorage_Permission() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-      // 先判断有没有权限
-      if (!Environment.isExternalStorageManager()) {
-        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-        intent.setData(Uri.parse("package:" + this.getPackageName()));
-        startActivity(intent);
-      }
-    }
   }
 }
