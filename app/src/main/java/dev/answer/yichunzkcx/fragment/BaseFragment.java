@@ -1,45 +1,64 @@
 package dev.answer.yichunzkcx.fragment;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.appbar.AppBarLayout;
 import android.view.Gravity;
+import dev.answer.yichunzkcx.AppConfig;
+import dev.answer.yichunzkcx.R;
+import dev.answer.yichunzkcx.util.ThemeUtils;
 
 public abstract class BaseFragment extends Fragment {
-    
-    private View mainView;
 
-    public BaseFragment() {
-        // Required empty public constructor
-    }
+  private View mainView;
 
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return loadRootView(inflater,container,savedInstanceState);
-    }
+  public BaseFragment() {
+    // Required empty public constructor
+  }
 
-    public View loadRootView(LayoutInflater inflater, ViewGroup container,
-                                     Bundle savedInstanceState){
-        int resID = getRootViewResID();
-        mainView = inflater.inflate(resID, container, false);
-        return mainView;
-    }
-    
-    public <T extends View> T findViewById(int id) {
-    	return mainView.findViewById(id);
-    }
-    
-    public void toast(String message) {
-    	Toast.makeText(getActivity(),message,Toast.LENGTH_LONG).show();
-    }
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    return loadRootView(inflater, container, savedInstanceState);
+  }
 
-    protected abstract int getRootViewResID();
+  public View loadRootView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    int resID = getRootViewResID();
+    mainView = inflater.inflate(resID, container, false);
+    return mainView;
+  }
+
+  public void initBar() {
+    boolean isDarkMode = ThemeUtils.isSystemInDarkTheme(getActivity());
+    WindowCompat.setDecorFitsSystemWindows(getActivity().getWindow(), false);
+    ThemeUtils.statusBarColor(getActivity(), Color.TRANSPARENT, isDarkMode);
+    MaterialToolbar toolbar = findViewById(R.id.toolbar);
+    toolbar.setTitle(getFragmentName());
+    ((AppCompatActivity) (getActivity())).setSupportActionBar(toolbar);
+  }
+
+  public <T extends View> T findViewById(int id) {
+    return mainView.findViewById(id);
+  }
+
+  public void toast(String message) {
+    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+  }
+
+  public String getFragmentName() {
+    return AppConfig.app_name;
+  }
+
+  protected abstract int getRootViewResID();
 }

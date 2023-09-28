@@ -15,7 +15,8 @@ import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.util.ThemeUtils;
 
 public class BaseActivity extends AppCompatActivity {
-
+    
+    
     public Activity mActivity;
 
     public MaterialToolbar toolbar;
@@ -26,7 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         this.mActivity = this;
         try {
             setContentView(getActivityLayout());
-            initBar();
+            if(isHasToolbar()) initBar();
             if (getShowBackButton()) initBackButton();
         } catch (Throwable error) {
             error.printStackTrace();
@@ -53,6 +54,10 @@ public class BaseActivity extends AppCompatActivity {
                         onBackPressed();
                     }
                 });
+    }
+    
+    public boolean isHasToolbar() {
+    	return true;
     }
 
     public boolean getShowBackButton() {

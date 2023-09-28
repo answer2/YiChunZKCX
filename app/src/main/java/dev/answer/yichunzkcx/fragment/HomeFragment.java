@@ -35,9 +35,13 @@ public class HomeFragment extends BaseFragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
+
+    initBar();
+
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
     try {
+
       // init View
       countdownTextView = findViewById(R.id.Countdown);
       nameEdit = findViewById(R.id.name_textInput);
@@ -116,6 +120,6 @@ public class HomeFragment extends BaseFragment {
   @Override
   protected int getRootViewResID() {
     // TODO: Implement this method
-    return R.layout.activity_home;
+    return R.layout.fragment_query;
   }
 }

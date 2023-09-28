@@ -41,6 +41,13 @@ public class MainActivity extends BaseActivity {
 
     setCurrentFragment(homeFragment);
   }
+    
+    @Override
+    public boolean isHasToolbar() {
+        // TODO: Implement this method
+        return false;
+    }
+    
 
   @Override
   public String getActivityName() {
@@ -161,4 +168,12 @@ public class MainActivity extends BaseActivity {
     int index = origin.lastIndexOf(target);
     return new int[] {index, index + target.length()};
   }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO: Implement this method
+        homeFragment.onDestroy();
+    }
+    
 }

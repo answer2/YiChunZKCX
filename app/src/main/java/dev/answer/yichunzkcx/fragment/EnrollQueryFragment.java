@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.os.Bundle;
 import android.view.View;
 
+import dev.answer.yichunzkcx.R;
+
 public class EnrollQueryFragment extends BaseFragment{
     
     @Override
@@ -19,7 +21,7 @@ public class EnrollQueryFragment extends BaseFragment{
     @Override
     protected int getRootViewResID() {
         // TODO: Implement this method
-        return 0;
+        return R.layout.fragment_enroll;
     }
     
 }

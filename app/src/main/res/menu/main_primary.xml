@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/menu_achievement"
-        android:name="成绩" />
+        android:title="成绩" />
 
     <item
         android:id="@+id/menu_enroll"
-        android:name="录取" />
+        android:title="录取" />
     
 </menu>
