@@ -36,7 +36,7 @@ public class HomeFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
 
-   // initBar();
+    initBar();
 
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
@@ -60,6 +60,15 @@ public class HomeFragment extends BaseFragment {
     }
 
     return parentView;
+  }
+
+  public void renewed() {
+    try {
+      util.QueryCode();
+    } catch (Throwable error) {
+      error.printStackTrace();
+      toast(error.toString());
+    }
   }
 
   public void renewed(View view) {
