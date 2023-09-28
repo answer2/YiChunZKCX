@@ -31,3 +31,9 @@
 
 # Pull Parser
 -keep class org.xmlpull.** { *; }
+
+-keep class javax.swing.** { *; }
+-keep class java.awt.** { *; }
+-dontwarn java.awt.**
+-dontwarn org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder
+
