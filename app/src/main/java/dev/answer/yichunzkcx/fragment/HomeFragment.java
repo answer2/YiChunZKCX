@@ -102,8 +102,8 @@ public class HomeFragment extends BaseFragment {
   }
 
   public void dev() {
-    Intent intent = new Intent(getActivity(), DevActivity.class);
-    startActivity(intent);
+  //  Intent intent = new Intent(getActivity(), DevActivity.class);
+   // startActivity(intent);
   }
 
   public String removeSpaces(TextInputEditText input) {
