@@ -7,5 +7,6 @@
 
     <item
         android:id="@+id/menu_enroll"
-        android:name="录取">
+        android:name="录取" />
+    
 </menu>
