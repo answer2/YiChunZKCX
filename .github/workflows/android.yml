@@ -1,9 +1,7 @@
-name: Android Build and Release
+name: Manual Build and Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build-and-release:
@@ -31,8 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
+          tag_name: ${{ github.run_number }}-manual
+          release_name: ${{ github.run_number }}-manual
           draft: false
           prerelease: false
 
