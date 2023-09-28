@@ -36,7 +36,7 @@ public class HomeFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
 
-    initBar();
+   // initBar();
 
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
