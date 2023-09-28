@@ -7,7 +7,15 @@ plugins {
 android {
     namespace = "dev.answer.yichunzkcx"
     compileSdk = 33
-    buildToolsVersion = "33.0.3"
+
+    signingConfigs {
+        create("release")  {
+            storeFile = file("AnswerDev.jks") // 密钥库文件路径
+            storePassword = "2903536884AnswerDev" // 密钥库密码
+            keyAlias = "AnswerDev" // 密钥别名
+            keyPassword = "2903536884AnswerDev" // 密钥密码
+        }
+    }
 
     defaultConfig {
         applicationId = "dev.answer.yichunzkcx"
@@ -28,7 +36,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

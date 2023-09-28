@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -67,7 +68,7 @@ public class BaseActivity extends AppCompatActivity {
     }
     
     public void delayed(Runnable able, int time){
-        new Handler().postDelayed(able,time); 
+        new Handler(Looper.getMainLooper()).postDelayed(able,time); 
     }
     
     public void log(String massage) {

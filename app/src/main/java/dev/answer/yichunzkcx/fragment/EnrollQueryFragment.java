@@ -1,0 +1,25 @@
+package dev.answer.yichunzkcx.fragment;
+
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.os.Bundle;
+import android.view.View;
+
+public class EnrollQueryFragment extends BaseFragment{
+    
+    @Override
+    public View loadRootView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: Implement this method
+        
+        
+        return super.loadRootView(inflater, container, savedInstanceState);
+    }
+    
+    
+    @Override
+    protected int getRootViewResID() {
+        // TODO: Implement this method
+        return 0;
+    }
+    
+}

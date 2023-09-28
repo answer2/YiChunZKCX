@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@android:color/transparent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
+        android:fitsSystemWindows="true"
+        app:liftOnScroll="true"
+        tools:viewBindingIgnore="true">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_height="?attr/actionBarSize"
+            android:layout_width="match_parent"
+            android:id="@+id/toolbar"
+            android:elevation="0dp"
+            android:layout_weight="1"
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+            android:background="@android:color/transparent"
+            app:layout_collapseMode="pin"
+            android:textStyle="bold" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text="- AnswerDev 开发 -"
+        android:id="@+id/title" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:id="@+id/Countdown"
+        android:textStyle="bold"
+        android:text="倒计时" />
+
+
+    <TextView
+        android:id="@+id/name_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Countdown"
+        android:textStyle="bold"
+        android:text="姓名：" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_textInputLayout"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="姓名"
+        app:counterEnabled="true"
+        app:counterMaxLength="10"
+        app:errorEnabled="true"
+        app:helperText="请确认好您的姓名"
+        app:helperTextEnabled="true"
+        app:placeholderText="请输入您的姓名"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_title"
+        style="?attr/textInputOutlinedDenseStyle">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/number_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_textInputLayout"
+        android:textStyle="bold"
+        android:text="准考证：" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/number_textInputLayout"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="准考证"
+        android:digits="0123456789"
+        android:inputType="number"
+        app:counterEnabled="true"
+        app:counterMaxLength="9"
+        app:errorEnabled="true"
+        app:helperText="请确认好您的准考证"
+        app:helperTextEnabled="true"
+        app:placeholderText="请输入您的准考证"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_title"
+        style="?attr/textInputOutlinedDenseStyle">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/number_textInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/code_title"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_textInputLayout"
+        android:textStyle="bold"
+        android:text="验证码：" />
+
+    <LinearLayout
+        android:id="@+id/code_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/code_title">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/code_textInputLayout"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="验证码"
+            android:digits="0123456789"
+            android:inputType="number"
+            app:counterEnabled="true"
+            app:counterMaxLength="5"
+            app:errorEnabled="true"
+            app:helperText="点击图片刷新验证码"
+            app:helperTextEnabled="true"
+            app:placeholderText="确认好您的验证码正确"
+            style="?attr/textInputOutlinedDenseStyle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/code_textInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageView
+            android:layout_weight="2"
+            android:id="@+id/code_image"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="10dp"
+            android:scaleType="fitXY"
+            android:gravity="top"
+            android:onClick="renewed" />
+
+    </LinearLayout>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/query_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查询"
+        android:onClick="query"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dev_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/code_linear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dev_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dev模式"
+        android:onClick="dev"
+        app:layout_constraintStart_toEndOf="@id/query_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/query_button" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

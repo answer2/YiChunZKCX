@@ -10,11 +10,11 @@ import java.util.Date;
 
 public class CountdownRunnable implements Runnable {
     
-    private final Date endTime = null;
-    
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private TextView countdownTextView;
+
+    private Date endTime = null;
     
     public CountdownRunnable(TextView countdownTextView){
         this.countdownTextView=countdownTextView;
