@@ -36,12 +36,13 @@ public class HomeFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
 
-    initBar();
+    
 
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
     try {
-
+            initBar();
+            
       // init View
       countdownTextView = findViewById(R.id.Countdown);
       nameEdit = findViewById(R.id.name_textInput);
@@ -62,6 +63,16 @@ public class HomeFragment extends BaseFragment {
     return parentView;
   }
 
+    public void renewed() {
+    try {
+      util.QueryCode();
+    } catch (Throwable error) {
+      error.printStackTrace();
+      toast(error.toString());
+    }
+  }
+
+    
   public void renewed(View view) {
     try {
       util.QueryCode();
