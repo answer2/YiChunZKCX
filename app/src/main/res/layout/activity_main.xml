@@ -8,7 +8,7 @@
     <!-- 主要内容 -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/content_frame"
-        android:name="dev.answer.alternativebox.ui.components.fragment.HomeFragment"
+        android:name="dev.answer.yichunzkcx.fragment.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/navigation_bar_view"/>
