@@ -22,8 +22,12 @@
 
 
 -keep class dev.answer.yichunzkcx.bean.** { *; }
--keep class org.apache.poi.xssf.usermodel.XSSFWorkbook
--keep class org.apache.poi.ss.usermodel.Workbook
--keep class org.apache.poi.hssf.usermodel.HSSFWorkbook
 
+# Apache POI
+-keep class org.apache.poi.** { *; }
 
+# javax.xml.stream
+-keep class javax.xml.stream.** { *; }
+
+# Pull Parser
+-keep class org.xmlpull.** { *; }
