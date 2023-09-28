@@ -62,15 +62,6 @@ public class HomeFragment extends BaseFragment {
     return parentView;
   }
 
-  public void renewed() {
-    try {
-      util.QueryCode();
-    } catch (Throwable error) {
-      error.printStackTrace();
-      toast(error.toString());
-    }
-  }
-
   public void renewed(View view) {
     try {
       util.QueryCode();
