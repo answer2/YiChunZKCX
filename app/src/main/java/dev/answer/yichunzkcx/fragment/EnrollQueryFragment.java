@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import android.widget.ImageView;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
@@ -29,7 +30,8 @@ public class EnrollQueryFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
     try {
-      initBar();
+      MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getFragmentName());
 
       nameEdit = findViewById(R.id.name_textInput);
       numberEdit = findViewById(R.id.number_textInput);
@@ -48,6 +50,7 @@ public class EnrollQueryFragment extends BaseFragment {
 
     } catch (Exception error) {
       error.printStackTrace();
+      toast(error.toString());
       StackTraceElement[] stackTrace = error.getStackTrace();
       if (stackTrace.length > 0) {
         // 获取第一个堆栈元素的行数

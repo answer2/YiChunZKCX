@@ -45,122 +45,139 @@ public class HttpUtil {
   private String enrollSchool;
 
   public void QueryJXEduCookie() {
-    try {
-      Request request = new Request.Builder().url(queryApi.getBaseJXeduApi()).build();
+    new Thread(
+            () -> {
+              try {
+                Request request = new Request.Builder().url(queryApi.getBaseJXeduApi()).build();
 
-      try (Response response = client.newCall(request).execute()) {
-        // 获取响应的 cookie
-        jxeduCookie = response.header("Set-Cookie");
-      }
-    } catch (Exception e) {
-      toast(e.toString());
-      e.printStackTrace();
-    }
+                try (Response response = client.newCall(request).execute()) {
+                  // 获取响应的 cookie
+                  jxeduCookie = response.header("Set-Cookie");
+                        toast(jxeduCookie);
+                }
+              } catch (Exception e) {
+                toast(e.toString());
+                e.printStackTrace();
+              }
+            })
+        .start();
   }
 
   public void QueryJXEduCode() {
-    Request request_code =
-        new Request.Builder()
-            .url(queryApi.getJXeduCodeApi())
-            .addHeader("Cookie", jxeduCookie)
-            .build();
+    new Thread(
+            () -> {
+              Request request_code =
+                  new Request.Builder()
+                      .url(queryApi.getJXeduCodeApi())
+                      .addHeader("Cookie", jxeduCookie)
+                      .build();
 
-    // 发送异步请求
-    client
-        .newCall(request_code)
-        .enqueue(
-            new Callback() {
-              @Override
-              public void onFailure(Call call, IOException e) {
-                // 处理请求失败情况
-                toast("请求失败-JXEdu-" + e.toString());
-              }
-
-              @Override
-              public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                  // 获取输入流
-                  InputStream inputStream = response.body().byteStream();
-                  // 将输入流转换为Bitmap
-                  Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                  jxeduCodeImage = bitmap;
-                  // 在UI线程更新ImageView
-                  mActivity.runOnUiThread(
-                      new Runnable() {
+              // 发送异步请求
+              client
+                  .newCall(request_code)
+                  .enqueue(
+                      new Callback() {
                         @Override
-                        public void run() {
-                          JxeduImageView.setImageBitmap(bitmap);
+                        public void onFailure(Call call, IOException e) {
+                          // 处理请求失败情况
+                          toast("请求失败-JXEdu-" + e.toString());
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                          if (response.isSuccessful()) {
+                            // 获取输入流
+                            InputStream inputStream = response.body().byteStream();
+                            // 将输入流转换为Bitmap
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            jxeduCodeImage = bitmap;
+                            // 在UI线程更新ImageView
+                            mActivity.runOnUiThread(
+                                new Runnable() {
+                                  @Override
+                                  public void run() {
+                                    JxeduImageView.setImageBitmap(bitmap);
+                                  }
+                                });
+                          } else {
+                            // 请求失败，处理错误情况
+                            toast("请求失败-JXEdu");
+                          }
                         }
                       });
-                } else {
-                  // 请求失败，处理错误情况
-                  toast("请求失败-JXEdu");
-                }
-              }
-            });
+            })
+        .start();
   }
 
   public void QueryJXEduLogin(String username, String password, String code) {
-    try {
-      RequestBody requestBody =
-          new FormBody.Builder()
-              .add("object.username", username) // 替换成实际的用户名
-              .add("password", "")
-              .add("object.amendpwd", password) // 替换成实际的密码
-              .add("object.remark", "")
-              .add("validateCode", code) // 替换成实际的验证码
-              .add("loginUrl", "https%3A%2F%2Fzkzz.jxedu.gov.cn%2Flogin!init.action")
-              .build();
+    new Thread(
+            () -> {
+              try {
+                RequestBody requestBody =
+                    new FormBody.Builder()
+                        .add("object.username", username) // 替换成实际的用户名
+                        .add("password", "")
+                        .add("object.amendpwd", password) // 替换成实际的密码
+                        .add("object.remark", "")
+                        .add("validateCode", code) // 替换成实际的验证码
+                        .add("loginUrl", "https%3A%2F%2Fzkzz.jxedu.gov.cn%2Flogin!init.action")
+                        .build();
 
-      // 创建POST请求
-      Request request =
-          new Request.Builder()
-              .url(queryApi.getJxeduLoginApi() + "?rand=" + Math.random())
-              .post(requestBody)
-              .addHeader("Cookie", jxeduCookie)
-              .build();
+                // 创建POST请求
+                Request request =
+                    new Request.Builder()
+                        .url(queryApi.getJxeduLoginApi() + "?rand=" + Math.random())
+                        .post(requestBody)
+                        .addHeader("Cookie", jxeduCookie)
+                        .build();
 
-      // 发送请求
-      Response response = client.newCall(request).execute();
+                // 发送请求
+                Response response = client.newCall(request).execute();
 
-      // 处理响应结果
-      if (response.isSuccessful()) {
-        String responseText = response.body().string();
-        // 处理响应文本
-        toast(response.header("Set-Cookie"));
+                // 处理响应结果
+                if (response.isSuccessful()) {
+                  String responseText = response.body().string();
+                  // 处理响应文本
+                  toast(response.header("Set-Cookie"));
 
-      } else {
-        // 请求失败，处理错误情况
-        toast("失败");
-      }
-    } catch (Exception e) {
-      toast(e.toString());
-      e.printStackTrace();
-    }
+                } else {
+                  // 请求失败，处理错误情况
+                  toast("失败");
+                }
+              } catch (Exception e) {
+                toast(e.toString());
+                e.printStackTrace();
+              }
+            })
+        .start();
   }
 
   public void QueryEnrollSchool() {
-    try {
-      Request request =
-          new Request.Builder()
-              .url(queryApi.getJxeduEnrollQuery())
-              .addHeader("Cookie", jxeduCookie)
-              .build();
+    new Thread(
+            () -> {
+              try {
+                Request request =
+                    new Request.Builder()
+                        .url(queryApi.getJxeduEnrollQuery())
+                        .addHeader("Cookie", jxeduCookie)
+                        .build();
 
-      // 发送请求
-      Response response = client.newCall(request).execute();
+                // 发送请求
+                Response response = client.newCall(request).execute();
 
-      // 处理响应结果
-      if (response.isSuccessful()) {
-        String responseText = response.body().string();
-        enrollSchool = responseText;
-        toast(responseText);
-      }
+                // 处理响应结果
+                if (response.isSuccessful()) {
+                  String responseText = response.body().string();
+                  enrollSchool = responseText;
+                  toast(responseText);
+                }
 
-    } catch (Exception e) {
-      toast(e.toString());
-      e.printStackTrace();
-    }
+              } catch (Exception e) {
+                toast(e.toString());
+                e.printStackTrace();
+              }
+            })
+        .start();
   }
 
   public String getEnrollSchool() {

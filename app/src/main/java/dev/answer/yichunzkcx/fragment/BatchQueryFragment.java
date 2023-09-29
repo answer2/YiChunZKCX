@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.graphics.Color;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import java.io.FileOutputStream;
 import android.util.Log;
@@ -68,7 +69,8 @@ public class BatchQueryFragment extends BaseFragment {
 
     try {
 
-      initBar();
+      MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getFragmentName());
 
       input_textInput = findViewById(R.id.input_textInput);
       sheet_textInput = findViewById(R.id.sheet_textInput);
@@ -106,6 +108,7 @@ public class BatchQueryFragment extends BaseFragment {
 
     } catch (Throwable error) {
       error.printStackTrace();
+            toast(error.toString());
       StackTraceElement[] stackTrace = error.getStackTrace();
       if (stackTrace.length > 0) {
         // 获取第一个堆栈元素的行数
