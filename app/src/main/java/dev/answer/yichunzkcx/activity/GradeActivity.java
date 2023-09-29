@@ -99,7 +99,7 @@ public class GradeActivity extends BaseActivity {
     @Override
     public String getActivityName() {
         // TODO: Implement this method
-        return AppConfig.app_name;
+        return "中考成绩";
     }
 
     @Override

@@ -1,15 +1,15 @@
 package dev.answer.yichunzkcx.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.gson.Gson;
+import dev.answer.yichunzkcx.activity.EnrollSchoolActivity;
 import dev.answer.yichunzkcx.activity.GradeActivity;
 import dev.answer.yichunzkcx.bean.CaptchaResponse;
 import dev.answer.yichunzkcx.bean.GradeResponse;
@@ -17,15 +17,30 @@ import dev.answer.yichunzkcx.queryApi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.FormBody;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.internal.http2.Header;
 
 public class HttpUtil {
 
@@ -36,7 +51,42 @@ public class HttpUtil {
   public HttpUtil(Activity activity) {
     // init
     this.mActivity = activity;
-    this.client = new OkHttpClient();
+    // 创建自定义的TrustManager
+
+    TrustManager[] trustAllCerts =
+        new TrustManager[] {
+          new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {}
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] chain, String authType)
+                throws CertificateException {}
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+              return new X509Certificate[0];
+            }
+          }
+        };
+
+    try {
+
+      SSLContext sslContext = SSLContext.getInstance("TLS");
+      sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+      HostnameVerifier hostnameVerifier = (hostname, session) -> true;
+
+      this.client =
+          new OkHttpClient.Builder()
+              .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
+              .hostnameVerifier(hostnameVerifier)
+              .build();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     this.gson = new Gson();
   }
 
@@ -56,7 +106,6 @@ public class HttpUtil {
                   // 获取响应的 cookie
                   jxeduCookie = response.header("Set-Cookie");
                   toast(jxeduCookie);
-                  
                 }
               } catch (Exception e) {
                 toast(e.toString());
@@ -72,11 +121,8 @@ public class HttpUtil {
               Request request_code =
                   new Request.Builder()
                       .url(queryApi.getJXeduCodeApi() + "?d=" + new Date().getTime())
-                      //  .addHeader("Cookie", jxeduCookie)
                       .build();
-              System.out.println(request_code.toString());
 
-              // 发送异步请求
               client
                   .newCall(request_code)
                   .enqueue(
@@ -90,12 +136,36 @@ public class HttpUtil {
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                           if (response.isSuccessful()) {
-                            // 获取输入流
+
+                            Headers headers_ = response.headers();
+
+                            List<Cookie> cookies_ = Cookie.parseAll(request_code.url(), headers_);
+                            System.out.println(cookies_);
+
+                            List<String> cookies = headers_.values("Set-Cookie");
+                            System.out.println(cookies);
+                            String content = "";
+                            if (cookies.size() > 0) {
+                              for (String cookieStr : cookies) {
+                                String session = cookieStr;
+                                if (!TextUtils.isEmpty(session)) {
+                                  int size = session.length();
+                                  int i = session.indexOf(";");
+                                  if (i < size && i >= 0) {
+                                    String result = session.substring(0, i);
+                                    content += result + "; ";
+                                  }
+                                }
+                              }
+                            }
+
+                            jxeduCookie = content;
+                            System.out.println(content);
+
                             InputStream inputStream = response.body().byteStream();
-                            // 将输入流转换为Bitmap
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             jxeduCodeImage = bitmap;
-                            // 在UI线程更新ImageView
+
                             mActivity.runOnUiThread(
                                 new Runnable() {
                                   @Override
@@ -114,50 +184,34 @@ public class HttpUtil {
   }
 
   public void QueryJXEduLogin(String username, String password, String code) {
-    toast(code);
-    System.out.println(code);
     new Thread(
             () -> {
               try {
-                MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
                 RequestBody requestBody =
-                    RequestBody.create(
-                        mediaType,
-                        "object.username="
-                            + username
-                            + "&password=&object.amendpwd="
-                            + password
-                            + "&object.remark=&validateCode="
-                            + code
-                            + "&loginUrl=https%3A%2F%2Fzkzz.jxedu.gov.cn%2Flogin%21init.action");
+                    new FormBody.Builder()
+                        .add("object.username", username)
+                        .add("password", "")
+                        .add("object.amendpwd", password)
+                        .add("object.remark", "")
+                        .add("validateCode", code)
+                        .add(
+                            "loginUrl",
+                            "https%253A%252F%252Fzkzz.jxedu.gov.cn%252Flogin%2521init.action")
+                        .build();
 
-                // 创建POST请求
                 Request request =
                     new Request.Builder()
                         .url(queryApi.getJxeduLoginApi() + "?rand=" + Math.random())
                         .post(requestBody)
-                        // .addHeader("Cookie", jxeduCookie)
+                        .addHeader("Cookie", jxeduCookie)
                         .build();
 
-                System.out.println(requestBody.toString());
-
-                // 发送请求
                 Response response = client.newCall(request).execute();
-                // 处理响应结果
                 if (response.isSuccessful()) {
                   String responseText = response.body().string();
-                  System.out.println(responseText);
 
-                  String jxeduCookie_new_ = response.header("Set-Cookie");
-                  jxeduCookie_new =
-                      jxeduCookie.replace(" path=/", "")
-                          + jxeduCookie_new_.replace(" Path=/; HttpOnly ", "")
-                          + "un="
-                          + username;
-
-                  if ("验证码输入错误！".equals(responseText)) {
-                    toast("验证码输入错误！");
-                  } else if ("OK".equals(responseText)) {
+                  if ("OK".equals(responseText)) {
+                    toast("获取成功，请稍等...");
                     QueryEnrollSchool();
                   } else {
                     toast(responseText);
@@ -182,17 +236,20 @@ public class HttpUtil {
                 Request request =
                     new Request.Builder()
                         .url(queryApi.getJxeduEnrollQuery())
-                        .addHeader("Cookie", jxeduCookie_new)
+                        .addHeader("Cookie", jxeduCookie)
                         .build();
 
-                // 发送请求
                 Response response = client.newCall(request).execute();
 
                 // 处理响应结果
                 if (response.isSuccessful()) {
                   String responseText = response.body().string();
                   enrollSchool = responseText;
-                  // toast(responseText);
+
+                  Intent intent = new Intent(mActivity, EnrollSchoolActivity.class);
+                  intent.putExtra("enroll", enrollSchool);
+                  mActivity.startActivity(intent);
+
                   System.out.println(enrollSchool);
                 }
 

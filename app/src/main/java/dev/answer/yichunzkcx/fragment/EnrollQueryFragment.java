@@ -44,7 +44,7 @@ public class EnrollQueryFragment extends BaseFragment {
       util = new HttpUtil(getActivity());
       util.setJXEduImageView(codeImage);
       util.QueryJXEduCode();
-      util.QueryJXEduCookie();
+      
       codeImage.setOnClickListener(view -> renewed());
 
       login_button.setOnClickListener(view -> login());

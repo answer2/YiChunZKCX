@@ -36,7 +36,7 @@
             android:exported="true" />
 
         <activity
-            android:name="dev.answer.yichunzkcx.activity.DevActivity"
+            android:name="dev.answer.yichunzkcx.activity.EnrollSchoolActivity"
             android:exported="true" />
 
         <activity
