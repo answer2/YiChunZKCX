@@ -1,5 +1,6 @@
 package dev.answer.yichunzkcx.fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -29,9 +30,9 @@ public class EnrollQueryFragment extends BaseFragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
+    View parentView = super.loadRootView(inflater, container, savedInstanceState);
     try {
-      MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("录取查询");
+      initBar();
 
       nameEdit = findViewById(R.id.name_textInput);
       numberEdit = findViewById(R.id.number_textInput);
@@ -42,24 +43,38 @@ public class EnrollQueryFragment extends BaseFragment {
       // init util
       util = new HttpUtil(getActivity());
       util.setJXEduImageView(codeImage);
-      util.QueryJXEduCookie();
       util.QueryJXEduCode();
-            
-      codeImage.setOnClickListener( view -> renewed());
-            
+      util.QueryJXEduCookie();
+      codeImage.setOnClickListener(view -> renewed());
+
+      login_button.setOnClickListener(view -> login());
 
     } catch (Exception error) {
       error.printStackTrace();
       toast(error.toString());
-      StackTraceElement[] stackTrace = error.getStackTrace();
-      if (stackTrace.length > 0) {
-        // 获取第一个堆栈元素的行数
-        int lineNumber = stackTrace[0].getLineNumber();
-        toast("错误发生在第 " + lineNumber + " 行");
-      }
-      Log.d("Batch_Query", error.toString());
     }
-    return super.loadRootView(inflater, container, savedInstanceState);
+    return parentView;
+  }
+
+  public void login() {
+    try {
+      String name = removeSpaces(nameEdit);
+      String number = removeSpaces(numberEdit);
+      String code = removeSpaces(codeEdit);
+
+      if (TextUtils.isEmpty(nameEdit.getText().toString())) {
+        nameEdit.setError("请输入报考号");
+      } else if (TextUtils.isEmpty(numberEdit.getText().toString())) {
+        numberEdit.setError("请输入密码");
+      } else if (TextUtils.isEmpty(codeEdit.getText().toString())) {
+        codeEdit.setError("请输入验证码");
+      } else {
+        util.QueryJXEduLogin(name, number, codeEdit.getText().toString());
+      }
+    } catch (Throwable error) {
+      error.printStackTrace();
+      toast(error.toString());
+    }
   }
 
   public void renewed() {
@@ -69,6 +84,18 @@ public class EnrollQueryFragment extends BaseFragment {
       error.printStackTrace();
       toast(error.toString());
     }
+  }
+
+  public String removeSpaces(TextInputEditText input) {
+    return removeSpaces(input.getText().toString());
+  }
+
+  public String removeSpaces(String input) {
+    if (input == null) {
+      return null;
+    }
+
+    return input.replaceAll("\\s", "");
   }
 
   @Override

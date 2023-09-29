@@ -18,7 +18,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:viewBindingIgnore="true"
         android:id="@+id/appbar">
-
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
@@ -29,7 +28,6 @@
             android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
             android:id="@+id/toolbar"
             android:textStyle="bold" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView

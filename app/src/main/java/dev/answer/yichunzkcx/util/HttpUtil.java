@@ -17,6 +17,7 @@ import dev.answer.yichunzkcx.queryApi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Date;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -40,6 +41,7 @@ public class HttpUtil {
   }
 
   private String jxeduCookie;
+  private String jxeduCookie_new;
   private Bitmap jxeduCodeImage;
   private ImageView JxeduImageView;
   private String enrollSchool;
@@ -53,7 +55,8 @@ public class HttpUtil {
                 try (Response response = client.newCall(request).execute()) {
                   // 获取响应的 cookie
                   jxeduCookie = response.header("Set-Cookie");
-                        toast(jxeduCookie);
+                  toast(jxeduCookie);
+                  
                 }
               } catch (Exception e) {
                 toast(e.toString());
@@ -68,9 +71,10 @@ public class HttpUtil {
             () -> {
               Request request_code =
                   new Request.Builder()
-                      .url(queryApi.getJXeduCodeApi())
-                      .addHeader("Cookie", jxeduCookie)
+                      .url(queryApi.getJXeduCodeApi() + "?d=" + new Date().getTime())
+                      //  .addHeader("Cookie", jxeduCookie)
                       .build();
+              System.out.println(request_code.toString());
 
               // 发送异步请求
               client
@@ -110,35 +114,54 @@ public class HttpUtil {
   }
 
   public void QueryJXEduLogin(String username, String password, String code) {
+    toast(code);
+    System.out.println(code);
     new Thread(
             () -> {
               try {
+                MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
                 RequestBody requestBody =
-                    new FormBody.Builder()
-                        .add("object.username", username) // 替换成实际的用户名
-                        .add("password", "")
-                        .add("object.amendpwd", password) // 替换成实际的密码
-                        .add("object.remark", "")
-                        .add("validateCode", code) // 替换成实际的验证码
-                        .add("loginUrl", "https%3A%2F%2Fzkzz.jxedu.gov.cn%2Flogin!init.action")
-                        .build();
+                    RequestBody.create(
+                        mediaType,
+                        "object.username="
+                            + username
+                            + "&password=&object.amendpwd="
+                            + password
+                            + "&object.remark=&validateCode="
+                            + code
+                            + "&loginUrl=https%3A%2F%2Fzkzz.jxedu.gov.cn%2Flogin%21init.action");
 
                 // 创建POST请求
                 Request request =
                     new Request.Builder()
                         .url(queryApi.getJxeduLoginApi() + "?rand=" + Math.random())
                         .post(requestBody)
-                        .addHeader("Cookie", jxeduCookie)
+                        // .addHeader("Cookie", jxeduCookie)
                         .build();
+
+                System.out.println(requestBody.toString());
 
                 // 发送请求
                 Response response = client.newCall(request).execute();
-
                 // 处理响应结果
                 if (response.isSuccessful()) {
                   String responseText = response.body().string();
-                  // 处理响应文本
-                  toast(response.header("Set-Cookie"));
+                  System.out.println(responseText);
+
+                  String jxeduCookie_new_ = response.header("Set-Cookie");
+                  jxeduCookie_new =
+                      jxeduCookie.replace(" path=/", "")
+                          + jxeduCookie_new_.replace(" Path=/; HttpOnly ", "")
+                          + "un="
+                          + username;
+
+                  if ("验证码输入错误！".equals(responseText)) {
+                    toast("验证码输入错误！");
+                  } else if ("OK".equals(responseText)) {
+                    QueryEnrollSchool();
+                  } else {
+                    toast(responseText);
+                  }
 
                 } else {
                   // 请求失败，处理错误情况
@@ -159,7 +182,7 @@ public class HttpUtil {
                 Request request =
                     new Request.Builder()
                         .url(queryApi.getJxeduEnrollQuery())
-                        .addHeader("Cookie", jxeduCookie)
+                        .addHeader("Cookie", jxeduCookie_new)
                         .build();
 
                 // 发送请求
@@ -169,7 +192,8 @@ public class HttpUtil {
                 if (response.isSuccessful()) {
                   String responseText = response.body().string();
                   enrollSchool = responseText;
-                  toast(responseText);
+                  // toast(responseText);
+                  System.out.println(enrollSchool);
                 }
 
               } catch (Exception e) {

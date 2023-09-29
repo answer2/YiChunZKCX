@@ -51,10 +51,10 @@ public class HomeFragment extends BaseFragment {
       codeEdit = findViewById(R.id.code_textInput);
       codeImage = findViewById(R.id.code_image);
       query_button = findViewById(R.id.query_button);
-      
+
       codeImage.setOnClickListener(view -> renewed());
       query_button.setOnClickListener(view -> query());
-      
+
       // init http util
       util = new HttpUtil(getActivity());
       util.setImageView(codeImage);
@@ -108,6 +108,12 @@ public class HomeFragment extends BaseFragment {
     }
 
     return input.replaceAll("\\s", "");
+  }
+
+  @Override
+  public String getFragmentName() {
+    // TODO: Implement this method
+    return super.getFragmentName();
   }
 
   @Override

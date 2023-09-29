@@ -23,7 +23,7 @@ public class queryApi {
     }
     
     public static String getJxeduLoginApi() {
-    	return getBaseJXeduApi() + "login!doLogin.action";
+    	return getBaseJXeduApi() + "/login!doLogin.action";
     }
     
     public static String getJxeduEnrollQuery() {

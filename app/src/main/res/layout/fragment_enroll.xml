@@ -5,7 +5,7 @@
      xmlns:tools="http://schemas.android.com/tools"
      android:layout_height="match_parent"
      android:layout_width="match_parent">
-    <com.google.android.material.appbar.AppBarLayout
+     <com.google.android.material.appbar.AppBarLayout
          android:layout_height="wrap_content"
          android:layout_width="match_parent"
          app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
@@ -35,12 +35,12 @@
          android:layout_height="wrap_content"
          android:layout_width="wrap_content"
          app:layout_constraintStart_toStartOf="parent"
-         android:textSize="25sp"
+         android:textSize="16sp"
          app:layout_constraintEnd_toEndOf="parent"
          android:layout_marginTop="20dp"
          app:layout_constraintTop_toBottomOf="@id/appbar"
          android:textStyle="bold"
-         android:text="- AnswerDev 开发 -"
+         android:text="- 江西省高中阶段学校招生电子化管理平台 -"
          android:id="@+id/title" />
 
     <TextView
@@ -72,7 +72,7 @@
          style="?attr/textInputOutlinedDenseStyle"
          app:errorEnabled="true"
          android:id="@+id/name_textInputLayout"
-         app:counterMaxLength="10">
+         app:counterMaxLength="14">
 
         <com.google.android.material.textfield.TextInputEditText
              android:layout_height="wrap_content"
@@ -109,6 +109,7 @@
          app:layout_constraintStart_toStartOf="parent"
          style="?attr/textInputOutlinedDenseStyle"
          app:errorEnabled="true"
+         android:inputType="textPassword"
          android:id="@+id/number_textInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -179,7 +180,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
          app:layout_constraintBottom_toBottomOf="parent"

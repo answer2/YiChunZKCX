@@ -66,13 +66,13 @@ public class BatchQueryFragment extends BaseFragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
-
+    View parentView = super.loadRootView(inflater, container, savedInstanceState);
     try {
 
-      MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getFragmentName());
+      initBar();
 
       input_textInput = findViewById(R.id.input_textInput);
+
       sheet_textInput = findViewById(R.id.sheet_textInput);
       output_textInput = findViewById(R.id.output_textInput);
       code_textInput = findViewById(R.id.code_textInput);
@@ -108,17 +108,10 @@ public class BatchQueryFragment extends BaseFragment {
 
     } catch (Throwable error) {
       error.printStackTrace();
-            toast(error.toString());
-      StackTraceElement[] stackTrace = error.getStackTrace();
-      if (stackTrace.length > 0) {
-        // 获取第一个堆栈元素的行数
-        int lineNumber = stackTrace[0].getLineNumber();
-        toast("错误发生在第 " + lineNumber + " 行");
-      }
-      Log.d("Batch_Query", error.toString());
+      toast(error.toString());
     }
 
-    return super.loadRootView(inflater, container, savedInstanceState);
+    return parentView;
   }
 
   public void read() {
