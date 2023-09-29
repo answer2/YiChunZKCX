@@ -68,6 +68,8 @@ public class BatchQueryFragment extends BaseFragment {
 
     try {
 
+      initBar();
+
       input_textInput = findViewById(R.id.input_textInput);
       sheet_textInput = findViewById(R.id.sheet_textInput);
       output_textInput = findViewById(R.id.output_textInput);
@@ -104,7 +106,12 @@ public class BatchQueryFragment extends BaseFragment {
 
     } catch (Throwable error) {
       error.printStackTrace();
-      toast(error.toString());
+      StackTraceElement[] stackTrace = error.getStackTrace();
+      if (stackTrace.length > 0) {
+        // 获取第一个堆栈元素的行数
+        int lineNumber = stackTrace[0].getLineNumber();
+        toast("错误发生在第 " + lineNumber + " 行");
+      }
       Log.d("Batch_Query", error.toString());
     }
 
@@ -352,13 +359,12 @@ public class BatchQueryFragment extends BaseFragment {
     return R.layout.fragment_batchquery;
   }
 
-    @Override
-    public String getFragmentName() {
-        // TODO: Implement this method
-        return "批量查询";
-    }
-    
-    
+  @Override
+  public String getFragmentName() {
+    // TODO: Implement this method
+    return "批量查询";
+  }
+
   public String removeSpaces(TextInputEditText input) {
     return removeSpaces(input.getText().toString());
   }

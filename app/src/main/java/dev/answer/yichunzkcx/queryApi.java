@@ -25,4 +25,8 @@ public class queryApi {
     public static String getJxeduLoginApi() {
     	return getBaseJXeduApi() + "login!doLogin.action";
     }
+    
+    public static String getJxeduEnrollQuery() {
+    	return getBaseJXeduApi() + "/pages/main/stumain/studentEnrollQueryAction!query.action";
+    }
 }

@@ -51,12 +51,10 @@ public class HomeFragment extends BaseFragment {
       codeEdit = findViewById(R.id.code_textInput);
       codeImage = findViewById(R.id.code_image);
       query_button = findViewById(R.id.query_button);
-      dev_button = findViewById(R.id.dev_button);
-
+      
       codeImage.setOnClickListener(view -> renewed());
       query_button.setOnClickListener(view -> query());
-      dev_button.setOnClickListener(view -> dev());
-
+      
       // init http util
       util = new HttpUtil(getActivity());
       util.setImageView(codeImage);
@@ -98,11 +96,6 @@ public class HomeFragment extends BaseFragment {
       error.printStackTrace();
       toast(error.toString());
     }
-  }
-
-  public void dev() {
-  //  Intent intent = new Intent(getActivity(), DevActivity.class);
-   // startActivity(intent);
   }
 
   public String removeSpaces(TextInputEditText input) {

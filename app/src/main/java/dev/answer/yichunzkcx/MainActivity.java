@@ -64,8 +64,6 @@ public class MainActivity extends BaseActivity {
       enrollQueryFragment = new EnrollQueryFragment();
       batchQueryFragment = new BatchQueryFragment();
 
-      initAnimation();
-
       setCurrentFragment(homeFragment);
 
       bottomNavigationView.setOnItemSelectedListener(
@@ -245,6 +243,8 @@ public class MainActivity extends BaseActivity {
     if (homeFragment != null && homeFragment.countdownTextView != null) {
       CountdownRunnable countdownRunnable = new CountdownRunnable(homeFragment.countdownTextView);
       new Thread(countdownRunnable).start(); // 在后台线程中开始倒计时任务
+    }else{
+        toast("失败");
     }
   }
 }
