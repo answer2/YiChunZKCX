@@ -46,7 +46,7 @@ public class BatchQueryFragment extends BaseFragment {
   private TextView info_count;
 
   private TextInputEditText input_textInput;
-  private TextInputEditText sheet_textInput;
+  // private TextInputEditText sheet_textInput;
   private TextInputEditText output_textInput;
   private TextInputEditText code_textInput;
   private ImageView codeImage;
@@ -73,7 +73,7 @@ public class BatchQueryFragment extends BaseFragment {
 
       input_textInput = findViewById(R.id.input_textInput);
 
-      sheet_textInput = findViewById(R.id.sheet_textInput);
+      // sheet_textInput = findViewById(R.id.sheet_textInput);
       output_textInput = findViewById(R.id.output_textInput);
       code_textInput = findViewById(R.id.code_textInput);
 
@@ -117,7 +117,6 @@ public class BatchQueryFragment extends BaseFragment {
   public void read() {
     try {
       initData();
-
     } catch (Throwable error) {
       error.printStackTrace();
       toast(error.toString());
@@ -136,71 +135,79 @@ public class BatchQueryFragment extends BaseFragment {
   private void initData() throws Exception {
     // init Apache POI
     excelTool.CreateByPath(removeSpaces(input_textInput));
+    for (int s = 0; excelTool.getSheetSize() > s; s++) {
+      // 基本信息位置获取
+      Sheet sheet = excelTool.getSheet(s);
+      Row headerRow = sheet.getRow(1); // 获取标题行
 
-    // 基本信息位置获取
-    Sheet sheet =
-        excelTool.getSheet(Integer.valueOf(sheet_textInput.getText().toString())); // 获取第一个工作表
-    Row headerRow = sheet.getRow(1); // 获取标题行
+      int examNumberIndex = -1; // 准考证号所在的列索引
+      int nameIndex = -1; // 姓名所在的列索引
 
-    int examNumberIndex = -1; // 准考证号所在的列索引
-    int nameIndex = -1; // 姓名所在的列索引
+      // 遍历标题行的每个单元格，查找准考证号和姓名所在的列
 
-    // 遍历标题行的每个单元格，查找准考证号和姓名所在的列
+      for (Cell cell : headerRow) {
+        String cellValue = cell != null ? cell.getStringCellValue() : "";
 
-    for (Cell cell : headerRow) {
-      String cellValue = cell != null ? cell.getStringCellValue() : "";
+        if (cellValue.contains("准考证号")) {
+          examNumberIndex = cell.getColumnIndex();
+        } else if (cellValue.contains("姓名")) {
+          nameIndex = cell.getColumnIndex();
+        }
 
-      if (cellValue.contains("准考证号")) {
-        examNumberIndex = cell.getColumnIndex();
-      } else if (cellValue.contains("姓名")) {
-        nameIndex = cell.getColumnIndex();
+        // 如果已经找到准考证号和姓名所在的列，则跳出循环
+        if (examNumberIndex != -1 && nameIndex != -1) {
+          break;
+        }
       }
 
-      // 如果已经找到准考证号和姓名所在的列，则跳出循环
-      if (examNumberIndex != -1 && nameIndex != -1) {
-        break;
+      // 遍历每一行（从第二行开始，跳过标题行）
+      for (int i = 2; i <= sheet.getLastRowNum(); i++) {
+
+        Row row = sheet.getRow(i);
+        if (row == null) continue;
+        // 读取准考证号和姓名
+        Cell examNumberCell = row.getCell(examNumberIndex);
+        Cell nameCell = row.getCell(nameIndex);
+
+        String examNumber = examNumberCell != null ? examNumberCell.getStringCellValue() : "";
+        String name = nameCell != null ? nameCell.getStringCellValue() : "";
+
+        // 判断空行直接跳过
+        if (examNumber.isEmpty() && name.isEmpty()) {
+          continue;
+        }
+
+        // 判断准考证号为空的话，不进行请求验证
+        if (examNumber.isEmpty()) {
+          // 创建 GradeResponse 对象
+          GradeResponse gradeResponse = new GradeResponse();
+
+          // 设置 GradeResponse 对象的属性值
+          gradeResponse.setCode(200);
+          gradeResponse.setMsg("Success");
+
+          // 创建 Data 对象
+          GradeResponse.Data data = gradeResponse.get();
+          data.setXm1(name);
+          data.setZkzh("");
+          gradeList.add(data);
+        } else {
+          // add list
+          nameList.add(name);
+          numberList.add(examNumber);
+        }
       }
     }
-
-    // 遍历每一行（从第二行开始，跳过标题行）
-    for (int i = 2; i <= sheet.getLastRowNum(); i++) {
-
-      Row row = sheet.getRow(i);
-      if (row == null) continue;
-      // 读取准考证号和姓名
-      Cell examNumberCell = row.getCell(examNumberIndex);
-      Cell nameCell = row.getCell(nameIndex);
-
-      String examNumber = examNumberCell != null ? examNumberCell.getStringCellValue() : "";
-      String name = nameCell != null ? nameCell.getStringCellValue() : "";
-
-      // 判断空行直接跳过
-      if (examNumber.isEmpty() && name.isEmpty()) {
-        continue;
-      }
-
-      // 判断准考证号为空的话，不进行请求验证
-      if (examNumber.isEmpty()) {
-        // 创建 GradeResponse 对象
-        GradeResponse gradeResponse = new GradeResponse();
-
-        // 设置 GradeResponse 对象的属性值
-        gradeResponse.setCode(200);
-        gradeResponse.setMsg("Success");
-
-        // 创建 Data 对象
-        GradeResponse.Data data = gradeResponse.get();
-        data.setXm1(name);
-        data.setZkzh("");
-        gradeList.add(data);
-      } else {
-        // add list
-        nameList.add(name);
-        numberList.add(examNumber);
-      }
-    }
-
     excelTool.close();
+
+    if (nameList != null && numberList != null) {
+      info_name.setText("学生姓名: " + nameList.get(count));
+      info_number.setText("准考证号: " + numberList.get(count));
+      info_count.setText("剩余: " + (nameList.size() - count));
+      toast("读取成功");
+    } else {
+      toast("读取失败或是Excel表格为空");
+    }
   }
 
   public void query() {
@@ -340,12 +347,13 @@ public class BatchQueryFragment extends BaseFragment {
 
         // 关闭工作簿
         workbook.close();
+                toast("导出成功");
       } else {
         toast("请先查询成绩，再导出数据");
       }
     } catch (Throwable error) {
       error.printStackTrace();
-      toast(error.toString());
+      toast("导出失败-"+error.toString());
     }
   }
 

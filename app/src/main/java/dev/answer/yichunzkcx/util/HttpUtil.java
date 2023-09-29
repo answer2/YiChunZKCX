@@ -221,6 +221,7 @@ public class HttpUtil {
                   // 请求失败，处理错误情况
                   toast("失败");
                 }
+                QueryJXEduCode();
               } catch (Exception e) {
                 toast(e.toString());
                 e.printStackTrace();

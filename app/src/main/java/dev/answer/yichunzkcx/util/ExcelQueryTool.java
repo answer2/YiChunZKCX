@@ -30,6 +30,10 @@ public class ExcelQueryTool {
         return this;
     }
     
+    public int getSheetSize(){
+        return workbook.getNumberOfSheets();
+    }
+    
     public Sheet getSheet(int count){
         return workbook.getSheetAt(count);
     }

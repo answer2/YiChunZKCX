@@ -38,7 +38,6 @@ public class HomeFragment extends BaseFragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
-
     parentView = super.loadRootView(inflater, container, savedInstanceState);
 
     try {
@@ -51,6 +50,9 @@ public class HomeFragment extends BaseFragment {
       codeEdit = findViewById(R.id.code_textInput);
       codeImage = findViewById(R.id.code_image);
       query_button = findViewById(R.id.query_button);
+
+      CountdownRunnable countdownRunnable = new CountdownRunnable(countdownTextView);
+      new Thread(countdownRunnable).start(); // 在后台线程中开始倒计时任务
 
       codeImage.setOnClickListener(view -> renewed());
       query_button.setOnClickListener(view -> query());
@@ -113,7 +115,7 @@ public class HomeFragment extends BaseFragment {
   @Override
   public String getFragmentName() {
     // TODO: Implement this method
-    return super.getFragmentName();
+    return "成绩查询";
   }
 
   @Override

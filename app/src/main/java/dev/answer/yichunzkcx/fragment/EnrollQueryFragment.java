@@ -44,7 +44,7 @@ public class EnrollQueryFragment extends BaseFragment {
       util = new HttpUtil(getActivity());
       util.setJXEduImageView(codeImage);
       util.QueryJXEduCode();
-      
+
       codeImage.setOnClickListener(view -> renewed());
 
       login_button.setOnClickListener(view -> login());
@@ -71,6 +71,8 @@ public class EnrollQueryFragment extends BaseFragment {
       } else {
         util.QueryJXEduLogin(name, number, codeEdit.getText().toString());
       }
+
+      codeEdit.setText("");
     } catch (Throwable error) {
       error.printStackTrace();
       toast(error.toString());
