@@ -31,7 +31,7 @@ public class EnrollQueryFragment extends BaseFragment {
     // TODO: Implement this method
     try {
       MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getFragmentName());
+        toolbar.setTitle("录取查询");
 
       nameEdit = findViewById(R.id.name_textInput);
       numberEdit = findViewById(R.id.number_textInput);

@@ -42,6 +42,9 @@ public abstract class BaseFragment extends Fragment {
   }
 
   public void initBar() {
+    boolean isDarkMode = ThemeUtils.isSystemInDarkTheme(getActivity());
+    WindowCompat.setDecorFitsSystemWindows(getActivity().getWindow(), false);
+    ThemeUtils.statusBarColor(getActivity(), Color.TRANSPARENT, isDarkMode);
     MaterialToolbar toolbar = findViewById(R.id.toolbar);
     toolbar.setTitle(getFragmentName());
     ((AppCompatActivity) (getActivity())).setSupportActionBar(toolbar);
