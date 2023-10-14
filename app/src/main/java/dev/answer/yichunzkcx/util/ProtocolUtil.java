@@ -105,7 +105,7 @@ public class ProtocolUtil {
         }
 
         return builder;
-    }>>+++
+    }
     
     public static class Token {
     private final String text;
