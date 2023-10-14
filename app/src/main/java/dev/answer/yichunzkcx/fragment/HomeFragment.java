@@ -13,8 +13,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
+import dev.answer.yichunzkcx.network.YiChunZkApi;
 import dev.answer.yichunzkcx.thread.CountdownRunnable;
-import dev.answer.yichunzkcx.util.HttpUtil;
 
 public class HomeFragment extends BaseFragment {
 
@@ -32,7 +32,7 @@ public class HomeFragment extends BaseFragment {
   private MaterialButton query_button;
   private MaterialButton dev_button;
 
-  private HttpUtil util;
+  private YiChunZkApi util;
 
   @Override
   public View loadRootView(
@@ -58,7 +58,7 @@ public class HomeFragment extends BaseFragment {
       query_button.setOnClickListener(view -> query());
 
       // init http util
-      util = new HttpUtil(getActivity());
+      util = new YiChunZkApi(getActivity());
       util.setImageView(codeImage);
       util.QueryCode();
     } catch (Throwable error) {

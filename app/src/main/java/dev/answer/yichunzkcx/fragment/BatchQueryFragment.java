@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.graphics.Color;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import dev.answer.yichunzkcx.network.YiChunZkApi;
 import java.io.FileOutputStream;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +27,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.bean.GradeResponse;
 import dev.answer.yichunzkcx.util.ExcelQueryTool;
-import dev.answer.yichunzkcx.util.HttpUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +50,7 @@ public class BatchQueryFragment extends BaseFragment {
   private TextInputEditText output_textInput;
   private TextInputEditText code_textInput;
   private ImageView codeImage;
-  private HttpUtil util;
+  private YiChunZkApi util;
   private ExcelQueryTool excelTool;
 
   private int count = 0;
@@ -95,7 +95,7 @@ public class BatchQueryFragment extends BaseFragment {
       output_button.setOnClickListener(view -> output());
 
       // init util
-      util = new HttpUtil(getActivity());
+      util = new YiChunZkApi(getActivity());
       util.setImageView(codeImage);
       util.QueryCode();
 

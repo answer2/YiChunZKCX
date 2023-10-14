@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import androidx.core.content.ContextCompat;
 import java.util.List;
+import dev.answer.yichunzkcx.R;
 
 public class ProtocolUtil {
    public static String readTextFromAssets(Context context, String filePath) {
