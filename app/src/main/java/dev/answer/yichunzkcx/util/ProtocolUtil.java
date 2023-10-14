@@ -5,6 +5,8 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.text.style.TextAppearanceSpan;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.theme.overlay.MaterialThemeOverlay;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -12,12 +14,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import androidx.core.content.ContextCompat;
 import java.util.List;
-import android.R;
+import androidx.appcompat.R;
 
 public class ProtocolUtil {
    public static String readTextFromAssets(Context context, String filePath) {
         AssetManager assetManager = context.getAssets();
         StringBuilder stringBuilder = new StringBuilder();
+        
         try {
             InputStream inputStream = assetManager.open(filePath);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -100,7 +103,7 @@ public class ProtocolUtil {
                     break;
                 default:
                     builder.append(token.getText());
-                    builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.text_color)), builder.length() - token.getText().length(), builder.length(), 0);
+                    builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, com.google.android.material.R.color.abc_primary_text_material_light)), builder.length() - token.getText().length(), builder.length(), 0);
                     break;
             }
         }
