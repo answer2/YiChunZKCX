@@ -12,11 +12,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
+import dev.answer.yichunzkcx.network.JXEduApi;
 import dev.answer.yichunzkcx.util.HttpUtil;
 
 public class EnrollQueryFragment extends BaseFragment {
 
-  private HttpUtil util;
+  private JXEduApi api;
 
   private TextInputEditText nameEdit;
   private TextInputEditText numberEdit;
@@ -41,9 +42,9 @@ public class EnrollQueryFragment extends BaseFragment {
       login_button = findViewById(R.id.login_button);
 
       // init util
-      util = new HttpUtil(getActivity());
-      util.setJXEduImageView(codeImage);
-      util.QueryJXEduCode();
+      api = new JXEduApi(getActivity());
+      api.setJXEduImageView(codeImage);
+      api.QueryJXEduCode();
 
       codeImage.setOnClickListener(view -> renewed());
 
@@ -69,7 +70,7 @@ public class EnrollQueryFragment extends BaseFragment {
       } else if (TextUtils.isEmpty(codeEdit.getText().toString())) {
         codeEdit.setError("请输入验证码");
       } else {
-        util.QueryJXEduLogin(name, number, codeEdit.getText().toString());
+        api.QueryJXEduLogin(name, number, codeEdit.getText().toString());
       }
 
       codeEdit.setText("");
@@ -81,7 +82,7 @@ public class EnrollQueryFragment extends BaseFragment {
 
   public void renewed() {
     try {
-      util.QueryJXEduCode();
+      api.QueryJXEduCode();
     } catch (Throwable error) {
       error.printStackTrace();
       toast(error.toString());

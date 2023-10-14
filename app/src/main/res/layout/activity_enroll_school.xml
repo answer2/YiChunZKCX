@@ -59,7 +59,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:textSize="30sp"
+                        android:textSize="28sp"
                         android:textStyle="bold"
                         android:text="暂无数据"
                         android:id="@+id/enrollschool_text" />

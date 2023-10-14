@@ -18,7 +18,7 @@ public class queryApi {
         return getYiChunBaseApi() + "/cj/get";
     }
     
-    public static String getJXeduCodeApi() {
+    public static String getJxeduCodeApi() {
     	return getBaseJXeduApi()+ "/login!img.action";
     }
     
@@ -28,5 +28,9 @@ public class queryApi {
     
     public static String getJxeduEnrollQuery() {
     	return getBaseJXeduApi() + "/pages/main/stumain/studentEnrollQueryAction!query.action";
+    }
+    
+    public static String getJxeduStudentInfo(){
+        return getBaseJXeduApi() + "/studentSignUpAction!showh5.action";
     }
 }

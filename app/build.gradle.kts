@@ -64,10 +64,11 @@ dependencies {
     //json
     implementation("com.google.code.gson:gson:2.10.1")
     
+    //解析Html
+    implementation(files("libs/jsoup-1.16.1.jar"))
+    
     //Excel处理
     implementation ("org.apache.poi:poi:4.0.1")
     implementation ("org.apache.poi:poi-ooxml:4.0.1")
-    implementation ("javax.xml.stream:stax-api:1.0-2")
-    implementation ("pull-parser:pull-parser:2.1.10")
-  
+    
 }
