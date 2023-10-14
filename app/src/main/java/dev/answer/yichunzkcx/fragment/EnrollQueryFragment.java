@@ -13,7 +13,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.network.JXEduApi;
-import dev.answer.yichunzkcx.util.HttpUtil;
 
 public class EnrollQueryFragment extends BaseFragment {
 
