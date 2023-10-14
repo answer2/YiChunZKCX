@@ -1,105 +1,41 @@
-package dev.answer.yichunzkcx.util;
+package dev.answer.yichunzkcx.network;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.gson.Gson;
-import dev.answer.yichunzkcx.activity.EnrollSchoolActivity;
+import dev.answer.yichunzkcx.MainApplication;
 import dev.answer.yichunzkcx.activity.GradeActivity;
 import dev.answer.yichunzkcx.bean.CaptchaResponse;
 import dev.answer.yichunzkcx.bean.GradeResponse;
 import dev.answer.yichunzkcx.queryApi;
+import dev.answer.yichunzkcx.util.ImageUtil;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
 import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.internal.http2.Header;
 
-public class HttpUtil {
-
-  private OkHttpClient client;
-  private Gson gson;
-  private Activity mActivity;
-
-  public HttpUtil(Activity activity) {
-    // init
-    this.mActivity = activity;
-    // 创建自定义的TrustManager
-
-    TrustManager[] trustAllCerts =
-        new TrustManager[] {
-          new X509TrustManager() {
-            @Override
-            public void checkClientTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {}
-
-            @Override
-            public void checkServerTrusted(X509Certificate[] chain, String authType)
-                throws CertificateException {}
-
-            @Override
-            public X509Certificate[] getAcceptedIssuers() {
-              return new X509Certificate[0];
-            }
-          }
-        };
-
-    try {
-
-      SSLContext sslContext = SSLContext.getInstance("TLS");
-      sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-
-      HostnameVerifier hostnameVerifier = (hostname, session) -> true;
-
-      this.client =
-          new OkHttpClient.Builder()
-              .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
-              .hostnameVerifier(hostnameVerifier)
-              .build();
-    } catch (Exception e) {
-      e.printStackTrace();
+public class YiChunZkApi {
+    private OkHttpClient client;
+    private Activity mActivity;
+    private Gson gson;
+    
+    public YiChunZkApi(Activity activity) {
+        this.mActivity = activity;
+        this.gson = new Gson();
+        this.client = new OkHttpClient();
     }
-
-    this.gson = new Gson();
-  }
-
-  private String jxeduCookie;
-  private String jxeduCookie_new;
-  private Bitmap jxeduCodeImage;
-  private ImageView JxeduImageView;
-  private String enrollSchool;
-
-  
-
-  // 请求验证码
-  private Drawable codeImage;
+    
+    private Drawable codeImage;
   private ImageView imageView;
   private String currentCaptchaId = "";
   private CaptchaResponse captchaResponse;
@@ -218,11 +154,8 @@ public class HttpUtil {
   public Drawable getDrawable() {
     return this.codeImage;
   }
-
-  private void toast(String massage) {
-    mActivity.runOnUiThread(
-        () -> {
-          Toast.makeText(mActivity, massage, Toast.LENGTH_LONG).show();
-        });
-  }
+    
+    private void toast(String message) {
+    	Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG);
+    }
 }

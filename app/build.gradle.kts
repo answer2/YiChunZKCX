@@ -57,7 +57,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     
     //OkHttp and Okio Library
-    implementation("com.squareup.okio:okio:3.3.0")
+    implementation("com.squareup.okio:okio:3.4.0")
     implementation("com.squareup.okhttp3:okhttp:3.12.1")
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
     

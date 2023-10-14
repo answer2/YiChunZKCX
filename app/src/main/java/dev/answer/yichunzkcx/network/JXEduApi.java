@@ -25,7 +25,6 @@ import okhttp3.Response;
 
 public class JXEduApi {
     private OkHttpClient client;
-    
     private Activity mActivity;
     
     private String jxeduCookie;

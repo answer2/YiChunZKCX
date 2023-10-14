@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:name="MainActivity"
+            android:name="dev.answer.yichunzkcx.activity.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action
@@ -31,6 +31,10 @@
                     android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="dev.answer.yichunzkcx.MainActivity"
+            android:exported="true" />
 
         <activity
             android:name="dev.answer.yichunzkcx.activity.GradeActivity"
