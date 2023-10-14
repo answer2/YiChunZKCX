@@ -42,7 +42,7 @@ public class EnrollQueryFragment extends BaseFragment {
 
       // init util
       api = new JXEduApi(getActivity());
-      api.setJXEduImageView(code</<>>Image);
+      api.setJXEduImageView(codeImage);
       api.QueryJXEduCode();
 
       codeImage.setOnClickListener(view -> renewed());
