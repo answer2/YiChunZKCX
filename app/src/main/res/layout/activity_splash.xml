@@ -48,13 +48,14 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintStart_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_weight="6.0">
-
-            <!-- Your content below appbar right here -->
+            android:layout_weight="8.0">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/splash_protocol_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.card.MaterialCardView
@@ -63,7 +64,8 @@
             app:layout_constraintTop_toBottomOf="@id/nested_scroll_view"
             android:layout_weight="2.0"
             android:elevation="2dp"
-            android:clickable="true">
+            android:clickable="true"
+            android:background="#000000">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent">
