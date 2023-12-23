@@ -156,6 +156,7 @@ public class YiChunZkApi {
   }
     
     private void toast(String message) {
+        
     	Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG);
     }
 }

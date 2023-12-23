@@ -27,6 +27,7 @@ public class ProtocolUtil {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
+                stringBuilder.append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,8 +95,11 @@ public class ProtocolUtil {
         for (Token token : tokens) {
             switch (token.getType()) {
                 case "title":
-                    builder.append(token.getText());
+                    builder.append("\n"+token.getText());
+                    
                     builder.setSpan(new TextAppearanceSpan(context, R.style.TextAppearance_AppCompat_Large), builder.length() - token.getText().length(), builder.length(), 0);
+                    builder.setSpan(new android.text.style.AbsoluteSizeSpan(22, true), builder.length() - token.getText().length(), builder.length(), 0);
+                    builder.append("\n");
                     break;
                 case "bold":
                     builder.append(token.getText());
@@ -103,7 +107,7 @@ public class ProtocolUtil {
                     break;
                 default:
                     builder.append(token.getText());
-                    builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, com.google.android.material.R.color.abc_primary_text_material_light)), builder.length() - token.getText().length(), builder.length(), 0);
+                    builder.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, com.google.android.material.R.color.m3_default_color_primary_text)), builder.length() - token.getText().length(), builder.length(), 0);
                     break;
             }
         }

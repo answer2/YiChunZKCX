@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -40,44 +41,52 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-        
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_weight="8.0"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            android:layout_weight="10.0"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/splash_protocol_text"
+                android:textSize="16sp"
+                android:padding="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
         </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.card.MaterialCardView
+        <LinearLayout
+            android:id="@+id/botton_background"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2.0"
-            android:elevation="2dp"
-            android:clickable="true"
-            android:background="#000000">
-            <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_weight="1.3">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/close_button"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent">
-
-                <com.google.android.material.button.MaterialButton
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:text="测试" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_weight="1.0"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                app:icon="@drawable/ic_arrow_back_black_24"
+                app:iconGravity="textEnd" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pass_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:icon="@drawable/ic_arrow_back_black_24"
+                app:iconGravity="textStart" 
+                 />
+        </LinearLayout>
 
 </LinearLayout>

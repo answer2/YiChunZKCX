@@ -8,35 +8,38 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import dev.answer.yichunzkcx.MainApplication;
 import dev.answer.yichunzkcx.activity.EnrollSchoolActivity;
+import dev.answer.yichunzkcx.network.networkManager;
+import dev.answer.yichunzkcx.network.service.JxEduService;
 import dev.answer.yichunzkcx.queryApi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class JXEduApi {
-    private OkHttpClient client;
     private Activity mActivity;
     
     private String jxeduCookie;
-    private String jxeduCookie_new;
     private Bitmap jxeduCodeImage;
     private ImageView JxeduImageView;
     private String enrollSchool;
     private int retryCount = 0;
     
+    private JxEduService service;
+    
     public JXEduApi(Activity activity) {
         this.mActivity = activity;
-        this.client = new OkHttpClient();
+        this.service = networkManager.getService("https://zkzz.jxedu.gov.cn/", JxEduService.class);
     }
     
     public String getEnrollSchool() {
@@ -47,152 +50,94 @@ public class JXEduApi {
         this.JxeduImageView = view;
     }
     
-    public void QueryJXEduCookie() {
-    new Thread(
-            () -> {
-              try {
-                Request request = new Request.Builder().url(queryApi.getBaseJXeduApi()).build();
-
-                try (Response response = client.newCall(request).execute()) {
-                  // 获取响应的 cookie
-                  jxeduCookie = response.header("Set-Cookie");
-                  toast(jxeduCookie);
-                }
-              } catch (Exception e) {
-                toast(e.toString());
-                e.printStackTrace();
-              }
-            })
-        .start();
-  }
-
   public void QueryJXEduCode() {
-    new Thread(() -> {
-              Request request_code =
-                  new Request.Builder()
-                      .url(queryApi.getJxeduCodeApi() + "?d=" + new Date().getTime())
-                      .build();
+        
+              Call<ResponseBody> call = service.queryCode(""+new Date().getTime());
 
-              client
-                  .newCall(request_code)
-                  .enqueue(
-                      new Callback() {
+              call.enqueue(new Callback<ResponseBody>() {
                         @Override
-                        public void onFailure(Call call, IOException e) {
+                        public void onFailure(Call<ResponseBody> call, Throwable e) {
                           // 处理请求失败情况
                           toast("请求失败-JXEdu-" + e.toString());
                         }
                         
                         @Override
-                        public void onResponse(Call call, Response response) throws IOException {
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                           if (response.isSuccessful()) {
-                            Headers headers_ = response.headers();
-                            List<Cookie> cookies_ = Cookie.parseAll(request_code.url(), headers_);
-                            List<String> cookies = headers_.values("Set-Cookie");
-                            String content = "";
-                            if (cookies.size() > 0) {
-                              for (String cookieStr : cookies) {
-                                String session = cookieStr;
-                                if (!TextUtils.isEmpty(session)) {
-                                  int size = session.length();
-                                  int i = session.indexOf(";");
-                                  if (i < size && i >= 0) {
-                                    String result = session.substring(0, i);
-                                    content += result + "; ";
-                                  }
-                                }
-                              }
-                            }
-
-                            jxeduCookie = content;
-                                
-                                
+                        
+                            
+                            jxeduCookie = networkManager.getCookies(response);
                             InputStream inputStream = response.body().byteStream();
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             jxeduCodeImage = bitmap;
-
+                            
                             mActivity.runOnUiThread(()->{
-                                        JxeduImageView.setImageBitmap(bitmap);
-                                });
+                                JxeduImageView.setImageBitmap(bitmap);
+                            });
+                                
                           } else {
                             // 请求失败，处理错误情况
                             toast("请求失败-JXEdu");
                           }
                         }
                       });
-            })
-        .start();
   }
 
   public void QueryJXEduLogin(String username, String password, String code) {
-    new Thread(
-            () -> {
-              try {
-                RequestBody requestBody =
-                    new FormBody.Builder()
-                        .add("object.username", username)
-                        .add("password", "")
-                        .add("object.amendpwd", password)
-                        .add("object.remark", "")
-                        .add("validateCode", code)
-                        .add(
-                            "loginUrl",
-                            "https%253A%252F%252Fzkzz.jxedu.gov.cn%252Flogin%2521init.action")
-                        .build();
+                Call<ResponseBody> call = service.login(jxeduCookie, Math.random()+"", username, "", password,"", code, "https%253A%252F%252Fzkzz.jxedu.gov.cn%252Flogin%2521init.action");
 
-                Request request =
-                    new Request.Builder()
-                        .url(queryApi.getJxeduLoginApi() + "?rand=" + Math.random())
-                        .post(requestBody)
-                        .addHeader("Cookie", jxeduCookie)
-                        .build();
-
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                  String responseText = response.body().string();
-
-                  if ("OK".equals(responseText)) {
-                    toast("获取成功，请稍等...");
-                    QueryEnrollSchool();
-                  } else {
-                    toast(responseText);
-                  }
-
-                } else {
-                  // 请求失败，处理错误情况
-                  toast("失败");
-                }
-                QueryJXEduCode();
+                call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable e) {
+                          // 处理请求失败情况
+                          toast("请求失败-JXEdu-" + e.toString());
+                        }
+                        
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                if (response.isSuccessful()) {
+                                  String responseText = response.body().string();
+                                  if ("OK".equals(responseText)) {
+                                        toast("获取成功，请稍等...");
+                                        QueryEnrollSchool();
+                                  } else {
+                                        toast(responseText);
+                                  }
+                        
+                                } else {
+                                  toast("失败");
+                                }
+                                QueryJXEduCode();
               } catch (Exception e) {
                 toast(e.toString());
                 e.printStackTrace();
               }
-            })
-        .start();
+        }
+        });
+
+                
+               
+         
   }
 
   public void QueryEnrollSchool() {
-    new Thread(
-            () -> {
               try {
-                Request request =
-                    new Request.Builder()
-                        .url(queryApi.getJxeduEnrollQuery())
-                        .addHeader("Cookie", jxeduCookie)
-                        .build();
-
-                Response response = client.newCall(request).execute();
-
+                
+            Call<ResponseBody> call = service.enrollQuery(jxeduCookie);
+            
+                Response response = call.execute();
+            String responseText = response.raw().body().string();
+            
+            System.out.println(responseText);
                 // 处理响应结果
                 if (response.isSuccessful()) {
-                  String responseText = response.body().string();
+                  
                   enrollSchool = responseText;
 
                   Intent intent = new Intent(MainApplication.getContext(), EnrollSchoolActivity.class);
                   intent.putExtra("enroll", enrollSchool);
                   MainApplication.getContext().startActivity(intent);
-
-                  System.out.println(enrollSchool);
                 }
 
               } catch (Exception e) {
@@ -205,8 +150,7 @@ public class JXEduApi {
                 }
                 e.printStackTrace();
               }
-            })
-        .start();
+           
   }
     
     private void toast(String message) {
