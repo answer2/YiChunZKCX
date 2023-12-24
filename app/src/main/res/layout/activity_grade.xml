@@ -6,35 +6,36 @@
     android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
+         android:background="@android:color/transparent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:liftOnScroll="true"
+         android:fitsSystemWindows="true"
+         app:layout_constraintEnd_toEndOf="parent"
+         tools:viewBindingIgnore="true"
+         android:id="@+id/appbar">
 
-   <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
-        android:fitsSystemWindows="true"
-        app:liftOnScroll="true"
-        tools:viewBindingIgnore="true">
         <com.google.android.material.appbar.MaterialToolbar
-            android:layout_height="?attr/actionBarSize"
-            android:layout_width="match_parent"
-            android:id="@+id/toolbar"
-            android:elevation="0dp"
-            android:layout_weight="1"
-            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
-            android:background="@android:color/transparent"
-            app:layout_collapseMode="pin"
-            android:textStyle="bold" />
+             android:layout_height="?attr/actionBarSize"
+             android:layout_width="match_parent"
+             android:background="@android:color/transparent"
+             android:elevation="0dp"
+             app:layout_collapseMode="pin"
+             android:layout_weight="1"
+             android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+             android:id="@+id/toolbar"
+             android:textStyle="bold" />
+
     </com.google.android.material.appbar.AppBarLayout>
-
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -25,17 +25,17 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class YiChunZkApi {
-    private OkHttpClient client;
-    private Activity mActivity;
-    private Gson gson;
-    
-    public YiChunZkApi(Activity activity) {
-        this.mActivity = activity;
-        this.gson = new Gson();
-        this.client = new OkHttpClient();
-    }
-    
-    private Drawable codeImage;
+  private OkHttpClient client;
+  private Activity mActivity;
+  private Gson gson;
+
+  public YiChunZkApi(Activity activity) {
+    this.mActivity = activity;
+    this.gson = new Gson();
+    this.client = new OkHttpClient();
+  }
+
+  private Drawable codeImage;
   private ImageView imageView;
   private String currentCaptchaId = "";
   private CaptchaResponse captchaResponse;
@@ -98,29 +98,40 @@ public class YiChunZkApi {
                   new Request.Builder().url(queryApi.getGradeApi()).post(requestBody).build();
 
               // 发送请求
+
               try {
                 Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                  responseData = response.body().string();
-                  gradeResponse = gson.fromJson(responseData, GradeResponse.class);
-                  if (gradeResponse.getCode() != 200) {
-                    toast(gradeResponse.getMsg());
-                    if (upDataRunnable != null) mActivity.runOnUiThread(failRunnable);
-                  } else {
-                    if (upDataRunnable == null) {
-                      toast("正在加载，请稍等");
-                      Intent intent = new Intent(mActivity, GradeActivity.class);
-                      intent.putExtra("bean", (Serializable) gradeResponse);
-                      mActivity.startActivity(intent);
-                    } else {
-                      mActivity.runOnUiThread(upDataRunnable);
-                    }
-                  }
-                } else {
-                  toast("Request failed");
-                }
+
+                mActivity.runOnUiThread(
+                    () -> {
+                      try {
+                        if (response.isSuccessful()) {
+                          responseData = response.body().string();
+                          gradeResponse = gson.fromJson(responseData, GradeResponse.class);
+                          if (gradeResponse.getCode() != 200) {
+                            toast(gradeResponse.getMsg());
+                            if (upDataRunnable != null) mActivity.runOnUiThread(failRunnable);
+                          } else {
+                            if (upDataRunnable == null) {
+                              toast("正在加载，请稍等");
+                              Intent intent = new Intent(mActivity, GradeActivity.class);
+                              intent.putExtra("bean", (Serializable) gradeResponse);
+                              mActivity.startActivity(intent);
+                            } else {
+                              mActivity.runOnUiThread(upDataRunnable);
+                            }
+                          }
+                        } else {
+                          toast("Request failed");
+                        }
+
+                      } catch (Exception e) {
+                        toast(e.toString());
+                        e.printStackTrace();
+                      }
+                    });
               } catch (Exception e) {
-                toast(e.toString());
+
                 e.printStackTrace();
               }
             })
@@ -154,9 +165,9 @@ public class YiChunZkApi {
   public Drawable getDrawable() {
     return this.codeImage;
   }
-    
-    private void toast(String message) {
-        
-    	Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG);
-    }
+
+  private void toast(String message) {
+
+    Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG);
+  }
 }

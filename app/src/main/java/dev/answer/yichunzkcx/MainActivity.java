@@ -125,10 +125,12 @@ public class MainActivity extends BaseActivity {
       StringBuilder content = new StringBuilder();
       content
           .append("本软件是由AnswerDev(2903536884)开发\n")
-          .append("由宜春市政府提供网站\n")
-          .append("“初中学考成绩查询”获取的Api\n\n")
+          .append("感谢“江西省高中阶段学校\n招生电子化管理平台”和")
+          .append("“初中学考成绩查询”\n政府网站的Api\n\n")
           .append("数据提供：宜春市教育体育局\n")
-          .append("技术支持：宜春市大数据发展管理局\n\n")
+          .append("技术支持：宜春市大数据发展管理局 和 AnswerDev\n\n")
+          .append("开源网站: github，gitee\n")
+          .append("社交网站：QQ, Bilibili\n")
           .append("仅用于学习讨论并不涉及商业和违法行为\n")
           .append("如有侵权我将会停用应用");
 
@@ -144,9 +146,44 @@ public class MainActivity extends BaseActivity {
       drawLink(
           spannableString,
           content.toString(),
+          "江西省高中阶段学校\n招生电子化管理平台",
+          primaryColor,
+          "https://zkzz.jxedu.gov.cn/");
+
+      drawLink(
+          spannableString,
+          content.toString(),
           "初中学考成绩查询",
           primaryColor,
           "https://zkchaxun.yichun.gov.cn/");
+
+      drawLink(
+          spannableString,
+          content.toString(),
+          "github",
+          primaryColor,
+          "https://github.com/answer2/YiChunZKCX");
+
+      drawLink(
+          spannableString,
+          content.toString(),
+          "gitee",
+          primaryColor,
+          "https://gitee.com/hvfcc/YiChunZKCX");
+
+      drawLink(
+          spannableString,
+          content.toString(),
+          "QQ",
+          primaryColor,
+          "mqqwpa://im/chat?chat_type=wpa&uin=2903536884");
+
+      drawLink(
+          spannableString,
+          content.toString(),
+          "Bilibili",
+          primaryColor,
+          "https://space.bilibili.com/503749880");
 
       LayoutInflater inflater = LayoutInflater.from(mActivity);
       View view = inflater.inflate(R.layout.dialog_about, null);
@@ -235,5 +272,4 @@ public class MainActivity extends BaseActivity {
       }
     }
   }
-
 }

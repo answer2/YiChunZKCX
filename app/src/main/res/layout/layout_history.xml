@@ -27,7 +27,7 @@
                  android:layout_width="wrap_content"
                  android:textSize="18sp"
                  android:textStyle="bold"
-                 android:text="学生姓名: --"
+                 android:text="姓名"
                  android:id="@+id/grade_name" />
 
             <TextView
@@ -36,7 +36,7 @@
                  android:textSize="16sp"
                  android:layout_marginTop="4dp"
                  android:textStyle="bold"
-                 android:text="准考证号：010100101"
+                 android:text="010100101"
                  android:id="@+id/grade_number" />
 
         </LinearLayout>
