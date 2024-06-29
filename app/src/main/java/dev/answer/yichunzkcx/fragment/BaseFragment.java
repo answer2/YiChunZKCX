@@ -55,7 +55,11 @@ public abstract class BaseFragment extends Fragment {
   }
 
   public void toast(String message) {
-    Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+    getActivity()
+        .runOnUiThread(
+            () -> {
+              Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+            });
   }
 
   public void delayed(Runnable able, int time) {

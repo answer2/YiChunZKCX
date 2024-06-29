@@ -14,7 +14,7 @@ public class EnrollSchoolActivity extends BaseActivity {
     TextView enrollschool_text = findViewById(R.id.enrollschool_text);
 
     if (getIntent() != null && enrollschool_text != null) {
-      String message =(String) getIntent().getSerializableExtra("enroll");
+      String message = getIntent().getStringExtra("enroll");
       if (!TextUtils.isEmpty(message)) {
         enrollschool_text.setText(message);
       }

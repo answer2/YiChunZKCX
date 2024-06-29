@@ -17,35 +17,22 @@ import dev.answer.yichunzkcx.R;
 import java.io.File;
 import java.util.Optional;
 import dev.answer.yichunzkcx.AppConfig;
+import dev.answer.yichunzkcx.databinding.ActivityGradeBinding;
 
 public class GradeActivity extends BaseActivity {
-
+    
+  private ActivityGradeBinding binding;
   private GradeResponse bean;
-
-  // info
-  private TextView grade_name;
-  private TextView grade_number;
-  private TextView grade_school;
-  // grade
-  private TextView grade_text_yw;
-  private TextView grade_text_sx;
-  private TextView grade_text_yy;
-  private TextView grade_text_zs;
-  private TextView grade_text_wl;
-  private TextView grade_text_hx;
-  private TextView grade_text_sd;
-  private TextView grade_text_ty;
-  private TextView grade_text_sy;
-  private TextView grade_text_jf;
-  private TextView grade_text_zf;
-
   public PropertiesUtil propertiesUtil;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
+        
+        binding = ActivityGradeBinding.inflate(getLayoutInflater());
+        
     try {
+            
       // history
       File history_file = new File(getDataDir().toString() + "/history");
       if (!history_file.exists()) history_file.mkdirs();
@@ -55,25 +42,7 @@ public class GradeActivity extends BaseActivity {
       propertiesUtil = new PropertiesUtil(history_properties);
 
       // init view
-
-      // info
-      grade_name = findViewById(R.id.grade_name);
-      grade_number = findViewById(R.id.grade_number);
-      grade_school = findViewById(R.id.grade_school);
-      // grade
-      grade_text_yw = findViewById(R.id.grade_text_yw);
-      grade_text_sx = findViewById(R.id.grade_text_sx);
-      grade_text_yy = findViewById(R.id.grade_text_yy);
-      grade_text_zs = findViewById(R.id.grade_text_zs);
-      grade_text_wl = findViewById(R.id.grade_text_wl);
-      grade_text_hx = findViewById(R.id.grade_text_hx);
-      grade_text_sd = findViewById(R.id.grade_text_sd);
-      grade_text_ty = findViewById(R.id.grade_text_ty);
-      grade_text_sy = findViewById(R.id.grade_text_sy);
-      grade_text_jf = findViewById(R.id.grade_text_jf);
-      grade_text_zf = findViewById(R.id.grade_text_zf);
-
-      this.bean = (GradeResponse) getIntent().getSerializableExtra("bean");
+      this.bean =  getIntent().getParcelableExtra("bean", GradeResponse.class);
       if (bean != null) {
         if (bean.getCode() == 200) {
           GradeResponse.Data data = bean.getData();
@@ -88,22 +57,22 @@ public class GradeActivity extends BaseActivity {
           propertiesUtil.closeFileStream();
 
           // info
-          setData(grade_name, "学生姓名: " + data.getXm1());
-          setData(grade_number, "准考证号: " + data.getZkzh());
+          setData(binding.gradeName, "学生姓名: " + data.getXm1());
+          setData(binding.gradeNumber, "准考证号: " + data.getZkzh());
 
-          setData(grade_school, "学校名称: " + "");
+          setData(binding.gradeSchool, "学校名称: " + ( data.getXxmc() != null ? data.getXxmc() : "") );
           // grade
-          setGrade(grade_text_yw, data.getYw());
-          setGrade(grade_text_sx, data.getSx());
-          setGrade(grade_text_yy, data.getYy());
-          setGrade(grade_text_zs, data.getZs());
-          setGrade(grade_text_wl, data.getWl());
-          setGrade(grade_text_hx, data.getHx());
-          setGrade(grade_text_sd, data.getSd());
-          setGrade(grade_text_ty, data.getTy());
-          setGrade(grade_text_sy, data.getSycz());
-          setGrade(grade_text_jf, data.getJf());
-          setGrade(grade_text_zf, data.getZf());
+          setGrade(binding.gradeTextYw, data.getYw());
+          setGrade(binding.gradeTextSx, data.getSx());
+          setGrade(binding.gradeTextYy, data.getYy());
+          setGrade(binding.gradeTextZs, data.getZs());
+          setGrade(binding.gradeTextWl, data.getWl());
+          setGrade(binding.gradeTextHx, data.getHx());
+          setGrade(binding.gradeTextSd, data.getSd());
+          setGrade(binding.gradeTextTy, data.getTy());
+          setGrade(binding.gradeTextSy, data.getSycz());
+          setGrade(binding.gradeTextJf, data.getJf());
+          setGrade(binding.gradeTextZf, data.getZf());
 
         } else {
           toast("获取失败");
@@ -120,7 +89,7 @@ public class GradeActivity extends BaseActivity {
   @Override
   public String getActivityName() {
     // TODO: Implement this method
-    return "中考成绩";
+    return AppConfig.year +"中考成绩";
   }
 
   @Override

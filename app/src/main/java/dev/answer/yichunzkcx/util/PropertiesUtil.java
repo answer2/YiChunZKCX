@@ -57,14 +57,14 @@ public class PropertiesUtil {
     return this;
   }
 
-  public <V> Collection<V> values() {
+  public <V extends Object> Collection<V> values() {
     if (isNotNull(properties)) {
       return (Collection<V>) properties.values();
     }
     return null;
   }
 
-  public <K> Set<K> keySet() {
+  public <K extends Object> Set<K> keySet() {
     if (isNotNull(properties)) {
       return (Set<K>) properties.keySet();
     }

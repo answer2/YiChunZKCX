@@ -1,36 +1,26 @@
 package dev.answer.yichunzkcx.fragment;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
-import android.text.TextUtils;
 import android.graphics.Color;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
-import dev.answer.yichunzkcx.network.YiChunZkApi;
-import java.io.FileOutputStream;
-import android.util.Log;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import com.google.android.material.card.MaterialCardView;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.bean.GradeResponse;
+import dev.answer.yichunzkcx.databinding.FragmentBatchqueryBinding;
+import dev.answer.yichunzkcx.network.YiChunZkApi;
 import dev.answer.yichunzkcx.util.ExcelQueryTool;
-import java.io.IOException;
+
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -39,22 +29,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class BatchQueryFragment extends BaseFragment {
 
-  private int defaultColor;
-  private MaterialCardView cardView;
-  private TextView info_name;
-  private TextView info_number;
-  private TextView info_count;
+  private FragmentBatchqueryBinding binding;
 
-  private TextInputEditText input_textInput;
-  // private TextInputEditText sheet_textInput;
-  private TextInputEditText output_textInput;
-  private TextInputEditText code_textInput;
-  private ImageView codeImage;
+  private int defaultColor;
   private YiChunZkApi util;
   private ExcelQueryTool excelTool;
 
   private int count = 0;
-
   private int name_site;
   private int number_site;
 
@@ -67,36 +48,26 @@ public class BatchQueryFragment extends BaseFragment {
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
     View parentView = super.loadRootView(inflater, container, savedInstanceState);
+        
+    binding = FragmentBatchqueryBinding.inflate(inflater, container, false);
+
     try {
 
       initBar();
-
-      input_textInput = findViewById(R.id.input_textInput);
-
-      // sheet_textInput = findViewById(R.id.sheet_textInput);
-      output_textInput = findViewById(R.id.output_textInput);
-      code_textInput = findViewById(R.id.code_textInput);
-
-      cardView = findViewById(R.id.card_info);
-      defaultColor = cardView.getCardBackgroundColor().getDefaultColor();
-      info_name = findViewById(R.id.info_name);
-      info_number = findViewById(R.id.info_number);
-      info_count = findViewById(R.id.info_count);
-
-      codeImage = findViewById(R.id.code_image);
+      defaultColor = binding.cardInfo.getCardBackgroundColor().getDefaultColor();
 
       MaterialButton query_button = findViewById(R.id.query_button);
       MaterialButton read_button = findViewById(R.id.read_button);
       MaterialButton output_button = findViewById(R.id.output_button);
 
-      codeImage.setOnClickListener(view -> renewed());
+      binding.codeImage.setOnClickListener(view -> renewed());
       query_button.setOnClickListener(view -> query());
       read_button.setOnClickListener(view -> read());
       output_button.setOnClickListener(view -> output());
 
       // init util
       util = new YiChunZkApi(getActivity());
-      util.setImageView(codeImage);
+      util.setImageView(binding.codeImage);
       util.QueryCode();
 
       excelTool = new ExcelQueryTool();
@@ -134,12 +105,11 @@ public class BatchQueryFragment extends BaseFragment {
 
   private void initData() throws Exception {
     // init Apache POI
-    excelTool.CreateByPath(removeSpaces(input_textInput));
+    excelTool.CreateByPath(removeSpaces(binding.inputTextInput));
     for (int s = 0; excelTool.getSheetSize() > s; s++) {
       // 基本信息位置获取
       Sheet sheet = excelTool.getSheet(s);
       Row headerRow = sheet.getRow(1); // 获取标题行
-
       int examNumberIndex = -1; // 准考证号所在的列索引
       int nameIndex = -1; // 姓名所在的列索引
 
@@ -181,13 +151,11 @@ public class BatchQueryFragment extends BaseFragment {
         if (examNumber.isEmpty()) {
           // 创建 GradeResponse 对象
           GradeResponse gradeResponse = new GradeResponse();
-
           // 设置 GradeResponse 对象的属性值
           gradeResponse.setCode(200);
           gradeResponse.setMsg("Success");
-
           // 创建 Data 对象
-          GradeResponse.Data data = gradeResponse.get();
+          GradeResponse.Data data = gradeResponse.getData();
           data.setXm1(name);
           data.setZkzh("");
           gradeList.add(data);
@@ -201,9 +169,9 @@ public class BatchQueryFragment extends BaseFragment {
     excelTool.close();
 
     if (nameList != null && numberList != null) {
-      info_name.setText("学生姓名: " + nameList.get(count));
-      info_number.setText("准考证号: " + numberList.get(count));
-      info_count.setText("剩余: " + (nameList.size() - count));
+      binding.infoName.setText("学生姓名: " + nameList.get(count));
+      binding.infoNumber.setText("准考证号: " + numberList.get(count));
+      binding.infoCount.setText("剩余: " + (nameList.size() - count));
       toast("读取成功");
     } else {
       toast("读取失败或是Excel表格为空");
@@ -212,20 +180,20 @@ public class BatchQueryFragment extends BaseFragment {
 
   public void query() {
     try {
-      if (TextUtils.isEmpty(code_textInput.getText().toString())) {
-        code_textInput.setError("请输入验证码");
+      if (TextUtils.isEmpty(binding.codeTextInput.getText().toString())) {
+        binding.codeTextInput.setError("请输入验证码");
         toast("请输入验证码");
       } else if (!nameList.isEmpty() && !numberList.isEmpty()) {
-        String code = removeSpaces(code_textInput);
+        String code = removeSpaces(binding.codeTextInput);
 
         util.setUpDataRunnable(
             () -> {
               gradeList.add(util.getGradeResponse().getData());
-              code_textInput.setText("");
-              cardView.setCardBackgroundColor(Color.parseColor("#4CAF50"));
+              binding.codeTextInput.setText("");
+              binding.cardInfo.setCardBackgroundColor(Color.parseColor("#4CAF50"));
               delayed(
                   () -> {
-                    cardView.setCardBackgroundColor(defaultColor);
+                    binding.cardInfo.setCardBackgroundColor(defaultColor);
                   },
                   1800);
               toast("查询成功，正在刷新验证码");
@@ -235,19 +203,19 @@ public class BatchQueryFragment extends BaseFragment {
 
         util.setFailRunnable(
             () -> {
-              code_textInput.setText("");
-              cardView.setCardBackgroundColor(Color.parseColor("#F44336"));
+              binding.codeTextInput.setText("");
+              binding.cardInfo.setCardBackgroundColor(Color.parseColor("#F44336"));
               delayed(
                   () -> {
-                    cardView.setCardBackgroundColor(defaultColor);
+                    binding.cardInfo.setCardBackgroundColor(defaultColor);
                   },
                   1800);
               util.QueryCode();
             });
 
-        info_name.setText("学生姓名: " + nameList.get(count));
-        info_number.setText("准考证号: " + numberList.get(count));
-        info_count.setText("剩余: " + (nameList.size() - count));
+        binding.infoName.setText("学生姓名: " + nameList.get(count));
+        binding.infoNumber.setText("准考证号: " + numberList.get(count));
+        binding.infoCount.setText("剩余: " + (nameList.size() - count));
 
         // 判断准考证号为空的话，不进行请求验证
         if (!numberList.get(count).isEmpty()) {
@@ -342,18 +310,18 @@ public class BatchQueryFragment extends BaseFragment {
 
         // 保存工作簿到文件
         // 输出文件类型为xlsx
-        FileOutputStream fileOut = new FileOutputStream(output_textInput.getText().toString());
+        FileOutputStream fileOut = new FileOutputStream(binding.outputTextInput.getText().toString());
         workbook.write(fileOut);
 
         // 关闭工作簿
         workbook.close();
-                toast("导出成功");
+        toast("导出成功");
       } else {
         toast("请先查询成绩，再导出数据");
       }
     } catch (Throwable error) {
       error.printStackTrace();
-      toast("导出失败-"+error.toString());
+      toast("导出失败-" + error.toString());
     }
   }
 

@@ -46,6 +46,10 @@
         <activity
             android:name="dev.answer.yichunzkcx.activity.EnrollSchoolActivity"
             android:exported="true" />
+        
+        <activity
+            android:name="dev.answer.yichunzkcx.activity.ZKGradeQuery"
+            android:exported="true" />
 
         <activity
             android:name="dev.answer.yichunzkcx.clash.GlobalApplication$CrashActivity"
