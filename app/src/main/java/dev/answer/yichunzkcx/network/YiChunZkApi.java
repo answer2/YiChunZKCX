@@ -95,7 +95,10 @@ public class YiChunZkApi {
 
               // 创建请求对象
               Request request =
-                  new Request.Builder().url(queryApi.getGradeApi()).post(requestBody).build();
+                  new Request.Builder()
+                .url(queryApi.getGradeApi())
+                .post(requestBody)
+                .build();
 
               // 发送请求
 
@@ -110,12 +113,12 @@ public class YiChunZkApi {
                           gradeResponse = gson.fromJson(responseData, GradeResponse.class);
                           if (gradeResponse.getCode() != 200) {
                             toast(gradeResponse.getMsg());
-                            if (upDataRunnable != null) mActivity.runOnUiThread(failRunnable);
+                            if (failRunnable != null) mActivity.runOnUiThread(failRunnable);
                           } else {
                             if (upDataRunnable == null) {
                               toast("正在加载，请稍等");
                               Intent intent = new Intent(mActivity, GradeActivity.class);
-                              intent.putExtra("bean", (Serializable) gradeResponse);
+                              intent.putExtra("bean", gradeResponse);
                               mActivity.startActivity(intent);
                             } else {
                               mActivity.runOnUiThread(upDataRunnable);
@@ -123,6 +126,7 @@ public class YiChunZkApi {
                           }
                         } else {
                           toast("Request failed");
+                                    
                         }
 
                       } catch (Exception e) {
@@ -167,7 +171,6 @@ public class YiChunZkApi {
   }
 
   private void toast(String message) {
-
-    Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG);
+    Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
   }
 }

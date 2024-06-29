@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
+import androidx.viewbinding.ViewBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import dev.answer.yichunzkcx.bean.GradeResponse;
 import dev.answer.yichunzkcx.util.PropertiesUtil;
@@ -19,20 +20,27 @@ import java.util.Optional;
 import dev.answer.yichunzkcx.AppConfig;
 import dev.answer.yichunzkcx.databinding.ActivityGradeBinding;
 
+import static dev.answer.yichunzkcx.AppConfig.isSupport;
+
 public class GradeActivity extends BaseActivity {
     
   private ActivityGradeBinding binding;
   private GradeResponse bean;
   public PropertiesUtil propertiesUtil;
 
+    @Override
+    public ViewBinding initBinding() {
+        // TODO: Implement this method
+        binding = ActivityGradeBinding.inflate(getLayoutInflater());
+        return binding;
+    }
+    
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
         
-        binding = ActivityGradeBinding.inflate(getLayoutInflater());
         
-    try {
-            
+    try{
       // history
       File history_file = new File(getDataDir().toString() + "/history");
       if (!history_file.exists()) history_file.mkdirs();
@@ -42,7 +50,9 @@ public class GradeActivity extends BaseActivity {
       propertiesUtil = new PropertiesUtil(history_properties);
 
       // init view
-      this.bean =  getIntent().getParcelableExtra("bean", GradeResponse.class);
+      this.bean = isSupport ? getIntent().getParcelableExtra("bean") :  getIntent().getParcelableExtra("bean", GradeResponse.class);
+            
+            
       if (bean != null) {
         if (bean.getCode() == 200) {
           GradeResponse.Data data = bean.getData();
@@ -55,7 +65,6 @@ public class GradeActivity extends BaseActivity {
           }
           propertiesUtil.store("updata");
           propertiesUtil.closeFileStream();
-
           // info
           setData(binding.gradeName, "学生姓名: " + data.getXm1());
           setData(binding.gradeNumber, "准考证号: " + data.getZkzh());

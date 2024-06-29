@@ -1,6 +1,5 @@
 package dev.answer.yichunzkcx.fragment;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
@@ -12,9 +11,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
+import androidx.viewbinding.ViewBinding;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.appbar.AppBarLayout;
-import android.view.Gravity;
 import dev.answer.yichunzkcx.AppConfig;
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.util.ThemeUtils;
@@ -37,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     int resID = getRootViewResID();
-    mainView = inflater.inflate(resID, container, false);
+    mainView  = inflater.inflate(resID, container, false);
     return mainView;
   }
 
@@ -69,6 +67,10 @@ public abstract class BaseFragment extends Fragment {
   public String getFragmentName() {
     return AppConfig.app_name;
   }
+    
+    public void initBinding(ViewBinding binding){
+        mainView = binding.getRoot();
+    }
 
   protected abstract int getRootViewResID();
 }

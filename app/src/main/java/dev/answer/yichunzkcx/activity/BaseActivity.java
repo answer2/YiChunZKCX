@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
+import androidx.viewbinding.ViewBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 import dev.answer.yichunzkcx.R;
 import dev.answer.yichunzkcx.util.ThemeUtils;
@@ -17,15 +18,18 @@ import dev.answer.yichunzkcx.util.ThemeUtils;
 public class BaseActivity extends AppCompatActivity {
 
   public Activity mActivity;
-
   public MaterialToolbar toolbar;
+  private ViewBinding binding;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     this.mActivity = this;
     try {
-      setContentView(getActivityLayout());
+      binding = initBinding();
+      if (binding != null) setContentView(binding.getRoot());
+      else setContentView(getActivityLayout());
+            
       if (isHasToolbar()) initBar();
       if (getShowBackButton()) initBackButton();
     } catch (Throwable error) {
@@ -39,9 +43,15 @@ public class BaseActivity extends AppCompatActivity {
     boolean isDarkMode = ThemeUtils.isSystemInDarkTheme(mActivity);
     WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
     ThemeUtils.statusBarColor(mActivity, Color.TRANSPARENT, isDarkMode);
-    toolbar = findViewById(R.id.toolbar);
+    toolbar =
+        binding != null ? binding.getRoot().findViewById(R.id.toolbar) : findViewById(R.id.toolbar);
     toolbar.setTitle(getActivityName());
     setSupportActionBar(toolbar);
+  }
+
+  public ViewBinding initBinding() {
+
+    return null;
   }
 
   private void initBackButton() {

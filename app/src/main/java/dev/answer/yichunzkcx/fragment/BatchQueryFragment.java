@@ -47,10 +47,9 @@ public class BatchQueryFragment extends BaseFragment {
   public View loadRootView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // TODO: Implement this method
-    View parentView = super.loadRootView(inflater, container, savedInstanceState);
-        
     binding = FragmentBatchqueryBinding.inflate(inflater, container, false);
-
+    View parentView = binding.getRoot();
+        initBinding(binding);
     try {
 
       initBar();
@@ -310,7 +309,8 @@ public class BatchQueryFragment extends BaseFragment {
 
         // 保存工作簿到文件
         // 输出文件类型为xlsx
-        FileOutputStream fileOut = new FileOutputStream(binding.outputTextInput.getText().toString());
+        FileOutputStream fileOut =
+            new FileOutputStream(binding.outputTextInput.getText().toString());
         workbook.write(fileOut);
 
         // 关闭工作簿
@@ -351,5 +351,11 @@ public class BatchQueryFragment extends BaseFragment {
 
   public static String listToString(List<?> list) {
     return list.stream().map(Object::toString).collect(Collectors.joining(" "));
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    binding = null;
   }
 }

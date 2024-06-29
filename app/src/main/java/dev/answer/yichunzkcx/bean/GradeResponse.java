@@ -11,6 +11,8 @@ import android.os.Parcelable;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 
+import static dev.answer.yichunzkcx.AppConfig.isSupport;
+
 public class GradeResponse implements Parcelable {
     private int code;
     private String msg;
@@ -24,7 +26,7 @@ public class GradeResponse implements Parcelable {
     protected GradeResponse(Parcel in) {
         code = in.readInt();
         msg = in.readString();
-        data = in.readParcelable(Data.class.getClassLoader(), Data.class);
+        data = isSupport ? in.readParcelable(Data.class.getClassLoader()) : in.readParcelable(Data.class.getClassLoader(), Data.class);
     }
 
     public static final Creator<GradeResponse> CREATOR = new Creator<GradeResponse>() {

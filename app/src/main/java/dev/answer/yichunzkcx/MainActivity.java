@@ -16,6 +16,7 @@ import android.text.style.UnderlineSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -109,6 +110,7 @@ public class MainActivity extends BaseActivity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_main, menu);
+
     return true;
   }
 
@@ -192,6 +194,9 @@ public class MainActivity extends BaseActivity {
       massage_Text.setText(spannableString);
       massage_Text.setMovementMethod(LinkMovementMethod.getInstance());
       massage_Text.setHighlightColor(Color.TRANSPARENT);
+
+      TextView version = view.findViewById(R.id.dialog_app_version);
+      version.setText(AppConfig.app_version);
 
       MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(mActivity);
       dialog.setView(view).create().show();

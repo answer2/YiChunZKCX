@@ -100,7 +100,7 @@ public class HomeFragment extends BaseFragment {
               v -> {
                 toast("正在加载，请稍等");
                 Intent intent = new Intent(activity, GradeActivity.class);
-                intent.putExtra("bean", (Serializable) gradeResponse);
+                intent.putExtra("bean", gradeResponse);
                 startActivity(intent);
               });
         }
