@@ -127,8 +127,8 @@ public class MainActivity extends BaseActivity {
       StringBuilder content = new StringBuilder();
       content
           .append("本软件是由AnswerDev(2903536884)开发\n")
-          .append("感谢“江西省高中阶段学校\n招生电子化管理平台”和")
-          .append("“初中学考成绩查询”\n政府网站的Api\n\n")
+          .append("感谢“江西省高中阶段学校招生电子化管理平台”和")
+          .append("“初中学考成绩查询”政府网站的Api\n\n")
           .append("数据提供：宜春市教育体育局\n")
           .append("技术支持：宜春市大数据发展管理局 和 AnswerDev\n\n")
           .append("开源网站: github，gitee\n")
@@ -148,7 +148,7 @@ public class MainActivity extends BaseActivity {
       drawLink(
           spannableString,
           content.toString(),
-          "江西省高中阶段学校\n招生电子化管理平台",
+          "江西省高中阶段学校招生电子化管理平台",
           primaryColor,
           "https://zkzz.jxedu.gov.cn/");
 

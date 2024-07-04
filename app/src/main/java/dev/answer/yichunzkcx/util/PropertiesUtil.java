@@ -1,5 +1,6 @@
 package dev.answer.yichunzkcx.util;
 
+import android.app.Activity;
 import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,6 +24,10 @@ public class PropertiesUtil {
 
   private BufferedWriter out;
 
+  public PropertiesUtil(Activity activity, String dir, String file) {
+    this(init(activity, dir, file));
+  }
+
   public PropertiesUtil(File file) {
     this(file.getAbsolutePath());
   }
@@ -38,6 +43,19 @@ public class PropertiesUtil {
         e.printStackTrace();
       }
     }
+  }
+
+  private static File init(Activity activity, String dir, String file) {
+    try {
+      File dirFile = new File(activity.getDataDir().toString() + dir);
+      File properties_ = new File(dirFile.toString() + file);
+      if (!dirFile.exists()) dirFile.mkdirs();
+      if (!properties_.exists()) properties_.createNewFile();
+      return properties_;
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   public PropertiesUtil store(String path, String comment) {

@@ -225,6 +225,7 @@
                 app:layout_constraintBottom_toTopOf="@id/history_title"
                 app:layout_constraintTop_toBottomOf="@id/code_linear"
                 android:id="@+id/query_button"
+                android:onClick="query"
                 android:text="查询" />
 
             <TextView

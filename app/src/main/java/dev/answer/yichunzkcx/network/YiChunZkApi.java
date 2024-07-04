@@ -171,6 +171,8 @@ public class YiChunZkApi {
   }
 
   private void toast(String message) {
+        mActivity.runOnUiThread(()->{
     Toast.makeText(MainApplication.getContext(), message, Toast.LENGTH_LONG).show();
+            });
   }
 }
