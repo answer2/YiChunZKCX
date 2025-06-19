@@ -1,73 +1,64 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/coordinator">
 
+    <!-- 顶部 AppBar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior"
+        android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:liftOnScroll="true"
         android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:viewBindingIgnore="true"
-        android:id="@+id/appbar">
+        app:liftOnScroll="true">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
             android:background="@android:color/transparent"
             android:elevation="0dp"
-            app:layout_collapseMode="pin"
-            android:layout_weight="1"
-            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
-            android:id="@+id/toolbar"
-            android:textStyle="bold" />
-
+            android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:layout_height="match_parent"
+    <!-- 内容滚动区 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:id="@+id/nested_scroll_view">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
+            <!-- Title -->
             <TextView
-                android:layout_height="wrap_content"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/Countdown"
-                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:text="- 宜春市初中学考成绩查询平台 -"
-                android:id="@+id/title" />
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                app:layout_constraintBottom_toTopOf="@id/name_title"
-                app:layout_constraintTop_toBottomOf="@id/title"
-                android:id="@+id/Countdown"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="倒计时" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Countdown -->
+            <TextView
+                android:id="@+id/Countdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="倒计时"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
 
             <TextView
                 android:layout_height="wrap_content"
@@ -257,7 +248,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
