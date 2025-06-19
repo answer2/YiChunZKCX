@@ -14,4 +14,12 @@
     <style
             name="AppTheme"
             parent="Base.AppTheme" />
+
+    <style name="CustomTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <item name="android:layout_marginTop">8dp</item>
+    <item name="boxStrokeColor">?attr/colorPrimary</item>
+    <item name="boxCornerRadiusTopStart">8dp</item>
+    <item name="boxCornerRadiusTopEnd">8dp</item>
+</style>
+
 </resources>
