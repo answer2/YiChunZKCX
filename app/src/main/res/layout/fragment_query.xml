@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     app:counterEnabled="true"
-                    app:placeholderText="确认好您的验证码正确"
+                    app:placeholderText="确认验证码正确"
                     app:helperTextEnabled="true"
                     android:layout_gravity="center_horizontal"
                     android:hint="验证码"
