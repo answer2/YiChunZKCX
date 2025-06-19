@@ -4,7 +4,7 @@ public class queryApi {
     
     //宜春初中学考成绩查询 接口
     public static String getYiChunBaseApi() {
-    	return "https://zkchaxun.yichun.gov.cn/zkcx";
+    	return "http://zkchaxun.yichun.gov.cn/zkcx";
     }
     
     //江西省高中阶段学校招生电子化管理平台 接口
