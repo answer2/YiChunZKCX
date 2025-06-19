@@ -3,7 +3,7 @@ import android.os.Build;
 
 public class AppConfig {
     
-    public static final boolean isSupport = Build.VERSION.SDK_INT < 34;
+    public static final boolean isSupport = Build.VERSION.SDK_INT < 35;
     
     public static final int year = 2025;
     
